@@ -1,0 +1,18 @@
+<launch>
+    <!-- ns_debug namespace avoid conflict with the real controller -->
+    <group ns="ns_debug">
+        <!-- load parameter from param folder -->
+        <rosparam file="$(find pouco2000_ros)/param/default.yaml" />
+        <!-- fake publishers -->
+        <node pkg="pouco2000_ros" type="debug_fake_publisher_buttons_node" name="debug_fake_publisher_buttons_node" output="screen">
+            <param name="rate" value="1"/>
+        </node>
+        <node pkg="pouco2000_ros" type="debug_fake_publisher_switchs_onoff_node" name="debug_fake_publisher_switchs_onoff_node"/>
+        <node pkg="pouco2000_ros" type="debug_fake_publisher_switchs_modes_node" name="debug_fake_publisher_switchs_modes_node"/>
+        <node pkg="pouco2000_ros" type="debug_fake_publisher_potentiometers_circle_node" name="debug_fake_publisher_potentiometes_circle_node"/>
+        <node pkg="pouco2000_ros" type="debug_fake_publisher_potentiometers_slider_node" name="debug_fake_publisher_potentiometes_slider_node"/>
+
+        <!-- fake controller -->
+        <node pkg="pouco2000_ros" type="controller_node" name="debug_fake_controller_node"/>
+    </group>
+</launch>
