@@ -1,0 +1,6 @@
+# vscode 
+.vscode/
+# documentation
+doc/
+# catkin_tools
+.catkin_tools/
