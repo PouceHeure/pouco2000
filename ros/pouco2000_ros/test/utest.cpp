@@ -45,7 +45,7 @@ TEST(TestPouco2000Lib, testWrapper)
     pouco2000_ros::Buttons fake_msg;
     fake_msg.data.push_back(true);
     fake_msg.data.push_back(false);
-    pouco2000_ros::ButtonsConstPtr fake_msg_ptr( new pouco2000_ros::Buttons(fake_msg));
+    pouco2000_ros::ButtonsConstPtr fake_msg_ptr(new pouco2000_ros::Buttons(fake_msg));
     wrapper_callback(fake_msg_ptr);
     EXPECT_EQ(fake_msg.data,c.current_msg.buttons.data);
 }

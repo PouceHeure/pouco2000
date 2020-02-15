@@ -14,5 +14,8 @@
 
         <!-- fake controller -->
         <node pkg="pouco2000_ros" type="controller_node" name="debug_fake_controller_node"/>
+
+        <!-- filter example -->
+        <node pkg="pouco2000_ros" type="filter_node" name="debug_filter_node"/>
     </group>
 </launch>

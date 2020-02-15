@@ -32,6 +32,7 @@ void load_parameter_converter(std::string key,
  * @brief load parameter rate from rosparam 
  * if a rate is given, the controller switch to the freq send mode
  * by default the node publishs once it receives a message 
+ * 
  * @param c 
  * @param key 
  */

@@ -32,7 +32,6 @@ class Convertisser{
         virtual T_to convert(const T_from& value)=0;
 };
 
-
 class ConvertisserPotentiometerToPercent: public Convertisser<float,float>{
     private:
         float min;
