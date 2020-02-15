@@ -11,47 +11,16 @@
 #include <pouco2000_ros/Potentiometers.h>
 
 /**
- * @brief 
- * 
+ * @brief Functions allowing to extract field from controller msg 
+ * If a new field is create inside the controller msg, a new extract method need to be created  
  */
-enum Field{
-    buttons,
-    switchs_on_off,
-    switchs_modes,
-    potentiometers_circle,
-    potentiometers_slider
+namespace extract {
+    pouco2000_ros::Buttons buttons(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::SwitchsOnOff switchs_onoff(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::SwitchsMode switchs_modes(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::Potentiometers potentiometers_circle(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::Potentiometers potentiometers_slider(const pouco2000_ros::Controller::ConstPtr& msg);
 };
-
-template<typename T>
-T default_msg();
-
-template<typename T>
-T default_msg(){
-    T value;
-    return value;
-}
-
-template<typename T> 
-T extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v);
-
-template<typename T> 
-T extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v){
-    ROS_ERROR("failed extraction");
-    return default_msg<T>();
-}
-
-template<> 
-pouco2000_ros::Buttons extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v);
-
-template<> 
-pouco2000_ros::Potentiometers extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v);
-
-template<> 
-pouco2000_ros::SwitchsMode extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v);
-
-template<> 
-pouco2000_ros::SwitchsOnOff extract_field(const pouco2000_ros::Controller::ConstPtr& msg,Field v);
-
 
 /**
  * @brief Class filtering data from controller msg 
@@ -61,6 +30,7 @@ pouco2000_ros::SwitchsOnOff extract_field(const pouco2000_ros::Controller::Const
  */
 template<typename T_msg_send,typename T_msg_field>
 class FilterPublisher{
+
     private: 
         static const int QUEUE_SIZE_PUBLISHER = 10;
         static const int QUEUE_SIZE_SUBSCRIBER = 100;
@@ -68,7 +38,7 @@ class FilterPublisher{
         ros::Subscriber sub;
         void callback(const pouco2000_ros::Controller::ConstPtr& msg, 
                       ros::Publisher& pub,
-                      Field field,
+                      boost::function< T_msg_field (const pouco2000_ros::Controller::ConstPtr& msg)> extracter,
                       int position);
     public:
         /**
@@ -77,43 +47,45 @@ class FilterPublisher{
          * @param n the current handlenode 
          * @param topic_sub topic name where controller msg is sent 
          * @param topic_pub topic name where filter will publish 
-         * @param field field of element filter, for example buttons 
+         * @param extracter function allowing to extract the field of a controller msg 
          * @param position position in the array of this field
          */
-        FilterPublisher(ros::NodeHandle& n,std::string topic_sub, std::string topic_pub,Field field,int position);
-        /**
-         * @brief Run the current FilterPublisher, in starting the communication with ros master 
-         */
-        void run();
+        FilterPublisher(ros::NodeHandle& n,
+                        std::string topic_sub, 
+                        std::string topic_pub,
+                        boost::function< T_msg_field (const pouco2000_ros::Controller::ConstPtr& msg)> extracter,
+                        int position);      
 };
 
 template<typename T_msg_send,typename T_msg_field>
-FilterPublisher<T_msg_send,T_msg_field>::FilterPublisher(ros::NodeHandle& n,std::string topic_sub, std::string topic_pub,Field field,int position){
+FilterPublisher<T_msg_send,T_msg_field>::FilterPublisher(ros::NodeHandle& n,
+                                                         std::string topic_sub, 
+                                                         std::string topic_pub,
+                                                         boost::function< T_msg_field (const pouco2000_ros::Controller::ConstPtr& msg)> extracter,
+                                                         int position){
     this->pub = n.advertise<T_msg_send>(topic_pub,FilterPublisher::QUEUE_SIZE_PUBLISHER);
-    auto callback_bind = boost::bind(&FilterPublisher<T_msg_send,T_msg_field>::callback,this,_1,boost::ref(pub),field,position);
+    auto callback_bind = boost::bind(&FilterPublisher<T_msg_send,T_msg_field>::callback,this,_1,boost::ref(pub),extracter,position);
     this->sub = n.subscribe<pouco2000_ros::Controller>(topic_sub,FilterPublisher::QUEUE_SIZE_SUBSCRIBER,callback_bind);
 }
 
 template<typename T_msg_send,typename T_msg_field>
 void FilterPublisher<T_msg_send,T_msg_field>::callback(const pouco2000_ros::Controller::ConstPtr& msg, 
                        ros::Publisher& pub,
-                       Field field,
+                       boost::function< T_msg_field (const pouco2000_ros::Controller::ConstPtr& msg)> extracter,
                        int position){
 
-    T_msg_field filter_msg = extract_field<T_msg_field>(msg,field); 
+    T_msg_field filter_msg = extracter(msg); 
     if(filter_msg.data.size() > position){
         T_msg_send msg_send;
         msg_send.data = filter_msg.data.at(position);
         pub.publish(msg_send);
     }else{
-        ROS_ERROR("out of range");
+        ROS_WARN("[topic:%s] [index:%d] error: out of range",this->pub.getTopic().c_str(),position);
     }
 }
 
-template<typename T_msg_send,typename T_msg_field>
-void FilterPublisher<T_msg_send,T_msg_field>::run(){
-    ros::spin();
-}
+
+
 
 
 
