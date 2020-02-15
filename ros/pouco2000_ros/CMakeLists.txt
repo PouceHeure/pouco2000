@@ -69,10 +69,17 @@ add_library(${PROJECT_NAME}_debug
   src/pouco2000_debug.cpp
 )
 
+add_library(${PROJECT_NAME}_introspection
+  src/pouco2000_introspection.cpp
+)
+
 ## Nodes release
 
 add_executable(controller_node node/release/controller.cpp)
 target_link_libraries(controller_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
+add_executable(filter_node node/release/filter.cpp)
+target_link_libraries(filter_node ${catkin_LIBRARIES} ${PROJECT_NAME}_introspection)
 
 ## Nodes debug
 
