@@ -11,6 +11,9 @@
 #define DEFAULT_RATE 10
 #define KEY_PARAM_RATE "~rate"
 
+/**
+ * @brief random namespace, including init(seed) and gen(template) methods 
+ */
 namespace rnd{
 
     void init();
@@ -34,6 +37,12 @@ namespace rnd{
 int load_param_rate(const std::string key,const int& default_value);
 
 
+/**
+ * @brief Initalise easily a fake publisher, class used on debug mode. 
+ * Avoiding to develop continually with the hardware part
+ * 
+ * @tparam T_msg 
+ */
 template<typename T_msg>
 class FakePublisher {
     private: 
@@ -51,7 +60,7 @@ template<typename T_msg>
 FakePublisher<T_msg>::FakePublisher(ros::NodeHandle& nh, std::string topic){
     this->pub = nh.advertise<T_msg>(topic, FakePublisher::QUEUE_SIZE_PUBLISHER);
     this->rate = load_param_rate(KEY_PARAM_RATE,DEFAULT_RATE);
-}
+};
 
 template<typename T_msg>
 template<typename T_data>

@@ -1,8 +1,6 @@
 #include <pouco2000_ros/pouco2000.hpp>
 
-/*
-########## Convertisser ########## 
-*/
+/* Convertisser */ 
 
 ConvertisserPotentiometerToPercent::ConvertisserPotentiometerToPercent(const float& _min,const float& _max){
     this->min = _min; 
@@ -22,9 +20,7 @@ pouco2000_ros::Potentiometers convert_potentiometers(ConvertisserPotentiometerTo
     return new_msg;
 }
 
-/*
-########## Controller ########## 
-*/
+/* Controller */
 
 Controller::Controller(){
 

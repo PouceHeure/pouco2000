@@ -15,11 +15,11 @@
  * If a new field is create inside the controller msg, a new extract method need to be created  
  */
 namespace extract {
-    pouco2000_ros::Buttons buttons(const pouco2000_ros::Controller::ConstPtr& msg);
-    pouco2000_ros::SwitchsOnOff switchs_onoff(const pouco2000_ros::Controller::ConstPtr& msg);
-    pouco2000_ros::SwitchsMode switchs_modes(const pouco2000_ros::Controller::ConstPtr& msg);
-    pouco2000_ros::Potentiometers potentiometers_circle(const pouco2000_ros::Controller::ConstPtr& msg);
-    pouco2000_ros::Potentiometers potentiometers_slider(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::Buttons field_buttons(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::SwitchsOnOff field_switchs_onoff(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::SwitchsMode field_switchs_modes(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::Potentiometers field_potentiometers_circle(const pouco2000_ros::Controller::ConstPtr& msg);
+    pouco2000_ros::Potentiometers field_potentiometers_slider(const pouco2000_ros::Controller::ConstPtr& msg);
 };
 
 /**
@@ -83,9 +83,3 @@ void FilterPublisher<T_msg_send,T_msg_field>::callback(const pouco2000_ros::Cont
         ROS_WARN("[topic:%s] [index:%d] error: out of range",this->pub.getTopic().c_str(),position);
     }
 }
-
-
-
-
-
-

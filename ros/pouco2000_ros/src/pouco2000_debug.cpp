@@ -15,7 +15,7 @@ float rnd::gen(int begin, int end) {
     float diff = end - begin;
     float r = random * diff;
     return begin + r;
-}
+} 
 
 int load_param_rate(const std::string key,const int& default_value){
     int rate;

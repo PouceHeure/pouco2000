@@ -32,6 +32,10 @@ class Convertisser{
         virtual T_to convert(const T_from& value)=0;
 };
 
+/**
+ * @brief Converter of potentiometer data to percent, allowing to normalize data from potentiometers
+ * 
+ */
 class ConvertisserPotentiometerToPercent: public Convertisser<float,float>{
     private:
         float min;
@@ -69,6 +73,10 @@ namespace callback{
     void potentiometers_slider(const pouco2000_ros::Potentiometers::ConstPtr&,pouco2000_ros::Controller&,ConvertisserPotentiometerToPercent&);
 };
 
+/**
+ * @brief Class gathering msgs from hardware part and concats these msgs into one message. 
+ * 
+ */
 class Controller{
     
     private:
@@ -125,12 +133,12 @@ class Controller{
         void set_sub_potentiometers_slider(std::string topic, boost::function<void(const pouco2000_ros::Potentiometers::ConstPtr&,pouco2000_ros::Controller& current_msg)>);
 
         /**
-         * @brief Regroups common instructions between all callback, like publish instruction. 
+         * @brief regroups common instructions between all callback, like publish instruction. 
          */
         void callback_controller();
 
         /**
-         * @brief start communication with ros 
+         * @brief starts communication with ros 
          */
         void run();  
         

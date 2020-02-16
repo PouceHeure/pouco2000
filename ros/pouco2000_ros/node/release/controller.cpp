@@ -15,7 +15,7 @@
  * @param min result min value 
  * @param max result max value 
  */
-void load_parameter_converter(std::string key,
+void load_parameter_converter(const std::string key,
                               const int d_min, const int d_max, 
                               int& min, int& max){
   XmlRpc::XmlRpcValue parameters;
@@ -62,8 +62,8 @@ int main(int argc, char **argv){
   load_parameter_rate(controller,KEY_PARAM_RATE);
   controller.set_node_handle(n);
   controller.set_pub_controller("controller");
+  controller.set_sub_buttons("buttons",callback::buttons); 
   // buttons 
-  controller.set_sub_buttons("buttons",callback::buttons);
   // switchs
   controller.set_sub_switchs_onoff("switchs_onoff",callback::switchs_onoff);
   controller.set_sub_switchs_modes("switchs_modes",callback::switchs_modes);

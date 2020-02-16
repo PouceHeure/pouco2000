@@ -1,8 +1,8 @@
 potentiometers:
   slider:
     min: 0
-    max: 1024
+    max: 10
   circle:
     min: 0
-    max: 1024
+    max: 10
   
