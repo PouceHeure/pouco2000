@@ -59,7 +59,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-
+## libs cpp 
 
 add_library(${PROJECT_NAME}
   src/pouco2000.cpp
@@ -73,6 +73,10 @@ add_library(${PROJECT_NAME}_introspection
   src/pouco2000_introspection.cpp
 )
 
+add_library(${PROJECT_NAME}_monitor
+  src/pouco2000_monitor.cpp
+)
+
 ## Nodes release
 
 add_executable(controller_node node/release/controller.cpp)
@@ -80,6 +84,9 @@ target_link_libraries(controller_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(filter_node node/release/filter.cpp)
 target_link_libraries(filter_node ${catkin_LIBRARIES} ${PROJECT_NAME}_introspection)
+
+add_executable(monitor_node node/release/monitor.cpp)
+target_link_libraries(monitor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_monitor)
 
 ## Nodes debug
 
