@@ -7,11 +7,11 @@ int main(int argc, char **argv){
 
   ros::NodeHandle n;
   auto gen = [](){
-    return rnd::gen<float>(0,10) > 5; 
-  }; 
+    return rnd::gen<int>(1,2); 
+  };  
 
   FakePublisher<pouco2000_ros::SwitchsMode> fake_publisher(n,"switchs_modes");
-  fake_publisher.run<bool>(5,gen);
+  fake_publisher.run<int>(5,gen);
 
   return 0;
 }
