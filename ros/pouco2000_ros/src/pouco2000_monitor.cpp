@@ -425,29 +425,29 @@ void Monitor::update_switchs_modes(const pouco2000_ros::Controller::ConstPtr& ms
 } 
 
 void Monitor::callback(const pouco2000_ros::Controller::ConstPtr& msg){
-    if(this->views_buttons.empty()){
+    if(!msg->buttons.data.empty() && this->views_buttons.empty()){
         init_buttons(msg);
     }
-    // if(this->views_switchs_mode.empty()){
-    //     init_switchs_modes(msg);
-    // }
-    if(this->views_switchs_onoff.empty()){
+    if(!msg->switchs_mode.data.empty() &&this->views_switchs_mode.empty()){
+        init_switchs_modes(msg);
+    }
+    if(!msg->switchs_on_off.data.empty() &&this->views_switchs_onoff.empty()){
         init_switchs_onoff(msg);
     }
-    // if(this->views_potentiometers_circle.empty()){
-    //     init_potentiometers_circle(msg);
-    // }
-    if(this->views_potentiometers_slider.empty()){
+    if(!msg->potentiometers_circle.data.empty() &&this->views_potentiometers_circle.empty()){
+        init_potentiometers_circle(msg);
+    }
+    if(!msg->potentiometers_slider.data.empty() &&this->views_potentiometers_slider.empty()){
         init_potentiometers_slider(msg);
     }
 
     view_seq_value->set_label(std::to_string(msg->header.seq));
     
     update_buttons(msg);
-    //update_switchs_modes(msg);
+    update_switchs_modes(msg);
     update_switchs_onoff(msg);
     update_potentiometers_slider(msg);
-    //update_potentiometers_circle(msg);
+    update_potentiometers_circle(msg);
     
     screen::clear();
     screen::print(draw().getContent());
