@@ -1,0 +1,18 @@
+<launch>
+    <!-- ns_debug namespace avoid conflict with the real controller -->
+    <group ns="ns_release">
+        <!-- load parameter from param folder -->
+        <rosparam file="$(find pouco2000_ros)/param/default.yaml" />
+        
+        <node pkg="rosserial_arduino" type="serial_node.py" name="hardware_switchs">
+            <param name="port" value="/dev/ttyUSB0"/>
+            <param name="baud" value="57600"/>
+        </node>
+
+        <!-- real controller -->
+        <node pkg="pouco2000_ros" type="controller_node" name="debug_fake_controller_node">
+            <!-- <param name="rate" value="5"/> -->
+        </node>
+
+    </group>
+</launch>
