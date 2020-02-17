@@ -31,8 +31,9 @@ namespace color {
      * @param color 
      * @return std::string 
      */
-    std::string write(std::string content, color::FG color);
+    std::string write(const std::string& content ,const color::FG color);
 };
+
 
 namespace screen {
     /**
@@ -40,7 +41,7 @@ namespace screen {
      * 
      * @param value 
      */
-    void print(std::string value);
+    void print(const std::string& value);
 
     /**
      * @brief Clear the terminal 
@@ -51,8 +52,31 @@ namespace screen {
 
 
 namespace math {
-    std::string round_digits(float value, int digits);
+    std::string round_digits(const float& value,const int& digits);
 }
+
+/**
+ * @brief Create own string object  
+ * Create color string and allows to compute the length.
+ * The color change the string content so a simple length isn't work. 
+ */
+class ColorString {
+    private:
+        std::string content;
+        int length;
+
+    public: 
+        ColorString();
+        ColorString(std::string);
+        ColorString(std::string, const color::FG);
+
+        int getLength();
+        std::string getContent();
+
+        void add(std::string);
+        void add(std::string,const color::FG color);
+        void add(ColorString);
+};
 
 /**
  * @brief Mother class defining the abstract method draw.
@@ -66,7 +90,7 @@ class View {
          * 
          * @return std::string draw generate by the current view 
          */
-        virtual std::string draw()=0;
+        virtual ColorString draw()=0;
 };
 
 /**
@@ -79,7 +103,7 @@ class LabelView: public View {
     public: 
         LabelView(std::string label);
         void set_label(std::string label);
-        std::string draw();
+        ColorString draw();
 };
 
 /**
@@ -98,7 +122,7 @@ class TitleLabelView: public LabelView{
     public: 
         TitleLabelView(std::string label, int width);
         TitleLabelView(std::string label, int width,char char_line);
-        std::string draw();
+        ColorString draw();
 };
 
 /**
@@ -127,7 +151,7 @@ class ProgressBarView: public View {
         ProgressBarView();
         ProgressBarView(int min, int max);
         void set_value(float value);
-        std::string draw();
+        ColorString draw();
 };
 
 /**
@@ -150,7 +174,7 @@ class SwitchView: public View {
         SwitchView(std::string valA, std::string valB);
         void set_value(T value);
 
-        std::string draw();
+        ColorString draw();
 };  
 
 template<typename T>
@@ -177,18 +201,22 @@ int SwitchView<int>::define_val_selected();
 
 
 template<typename T>
-std::string SwitchView<T>::draw(){
+ColorString SwitchView<T>::draw(){
     int value_selected = define_val_selected();
+    ColorString result("[");
     std::string result_a;
     std::string result_b;
     if(value_selected == 0){
-        result_a = color::write(valA,SwitchView::COLOR_SELECTED);
-        result_b = color::write(std::string(valB.length(),'-'),SwitchView::COLOR_UNSELECTED);
+        result.add(valA,SwitchView::COLOR_SELECTED);
+        result.add("|");
+        result.add(std::string(valB.length(),'-'),SwitchView::COLOR_UNSELECTED);
     }else{
-        result_a = color::write(std::string(valA.length(),'-'),SwitchView::COLOR_SELECTED);
-        result_b = color::write(valB,SwitchView::COLOR_UNSELECTED);
+        result.add(std::string(valA.length(),'-'),SwitchView::COLOR_SELECTED);
+        result.add("|");
+        result.add(valB,SwitchView::COLOR_UNSELECTED);
     }
-    std::string result = "["+ result_a + "|" + result_b + "]";
+    result.add("]");
+    //std::string result = "["+ result_a + "|" + result_b + "]";
     return result;
 };
 
@@ -202,7 +230,7 @@ class Container: public View {
     public:
         Container();
         void add_view(View *v);
-        virtual std::string draw()=0; 
+        virtual ColorString draw()=0; 
 };
 
 /**
@@ -212,7 +240,7 @@ class Container: public View {
 class ContainerVertical: public Container {
     public:
         ContainerVertical();
-        std::string draw(); 
+        ColorString draw(); 
 };
 
 /**
@@ -222,19 +250,28 @@ class ContainerVertical: public Container {
 class ContainerHorizontal: public Container {
     public:
         ContainerHorizontal();
-        std::string draw(); 
+        ColorString draw(); 
 };
 
 /**
- * @brief Manages views in N columns  
+ * @brief Manages views in N columns, automatically or not   
  * 
  */
 class ContainerNColumns: public Container {
     private: 
+        static const std::string LINE_SEPARATOR;
         int cols;
+        int width;
+        bool is_auto;
     public:
-        ContainerNColumns(int cols);
-        std::string draw(); 
+        /**
+         * @brief Construct a new Container N Columns object
+         * 
+         * @param cols_or_width define the number of colos or the width of the terminal 
+         * @param is_auto define if the container compute N columns automatically or not 
+         */
+        ContainerNColumns(int cols_or_width,bool is_auto);
+        ColorString draw(); 
 };
 
 
