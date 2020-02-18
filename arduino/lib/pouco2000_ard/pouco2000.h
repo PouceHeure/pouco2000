@@ -1,9 +1,11 @@
-#include <vector>
 #include <Arduino.h>
 #include <ros.h>
 
 #include <pouco2000_ros/SwitchsOnOff.h>
+#include <pouco2000_ros/Buttons.h>
+#include <pouco2000_ros/Potentiometers.h>
 
+#define DEBUG_SERIAL 
 
 
 struct Switch {
@@ -13,82 +15,80 @@ struct Switch {
 
 struct Button {
   int pin;
-  bool value;
+  bool value = false;
 };
 
 struct Potentiometer{
   int pin; 
-  int value;
+  int value = 0;
 };
-
 
 template<typename T_field, typename T_data, typename T_msg>
 class Handle{
   private: 
     ros::Publisher* pub;
-    std::vector<T_field> elements;
-    std::vector<T_data> data;
+    T_field* elements;
+    T_data* data;
     T_msg msg;
 
+    int n_connections;
     bool is_digital;
   
   public:
     Handle(char* topic);
-    Handle(char* topic,int connections[],int n_connections, bool is_digital);
-    void add(const T_field element);
+    Handle(char* topic,int* connections,int n_connections, bool is_digital);
     void setup(ros::NodeHandle& nh);
     void update();
 };
 
 template<typename T_field, typename T_data, typename T_msg>
-Handle<T_field,T_data,T_msg>::Handle(char* topic,int connections[],int n_connections,bool _is_digital){
-  this->is_digital = _is_digital;
-  this->pub = new ros::Publisher(topic,&msg);
-  int n = sizeof(connections)/sizeof(int);
-  for(int i=0;i<n;i++){
-    T_field* new_element = new T_field();
-    new_element->pin = connections[i];
-    //new_element->value = false;
-    this->elements.push_back(*new_element); 
-    //this->add(*new_element);
-  }
-}
+Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connections,bool _is_digital){
 
-template<typename T_field, typename T_data, typename T_msg>
-void Handle<T_field,T_data,T_msg>::add(const T_field element){
-  this->elements.push_back(element);
+  this->elements = static_cast< T_field* >(malloc(n_connections * sizeof(T_field)));
+  this->data = static_cast< T_data* >(malloc(n_connections * sizeof(T_data)));
+  this->n_connections = n_connections;
+  this->is_digital = _is_digital;
+ 
+  for(int i=0;i<this->n_connections;i++){
+    T_field* new_element = static_cast< T_field* >(malloc(1 * sizeof(T_field)));
+    new_element->pin = connections[i];
+    this->elements[i] = *new_element; 
+  }
+
+  this->pub = new ros::Publisher(topic,&msg);
 }
 
 template<typename T_field, typename T_data, typename T_msg>
 void Handle<T_field,T_data,T_msg>::setup(ros::NodeHandle& nh){
+  nh.loginfo("advertise pub");
   nh.advertise(*(this->pub));
-  for(int i=0;i<elements.size();i++){
+  for(int i=0;i<this->n_connections;i++){
     pinMode(elements[i].pin,INPUT);
   }
-  data.reserve(elements.size());
-  msg.data_length = elements.size();
+  msg.data_length = this->n_connections;
 }
 
 template<typename T_field, typename T_data, typename T_msg>
 void Handle<T_field,T_data,T_msg>::update(){
   T_data tmp_var;
-  T_data local_data[elements.size()] ;
-  for(int i=0;i<elements.size();i++){
+  
+  for(int i=0;i<this->n_connections;i++){
     if(is_digital){
       tmp_var = digitalRead(elements[i].pin);
     }else{
-      tmp_var = digitalRead(elements[i].pin);
+      tmp_var = analogRead(elements[i].pin);
     }
-    local_data[i] = tmp_var;
+    this->data[i] = tmp_var;
     if(tmp_var != elements[i].value){
-      //trig_new_msg_switch = true;
       elements[i].value = tmp_var;
     }
   }
 
-  msg.data = local_data;
+  msg.data = this->data;
   pub->publish(&msg);
 }
 
 
-typedef Handle<Switch,bool,pouco2000_ros::SwitchsOnOff> HandleSwitchsOnOff;
+typedef Handle<Switch,pouco2000_ros::SwitchsOnOff::_data_type,pouco2000_ros::SwitchsOnOff> HandleSwitchsOnOff;
+typedef Handle<Button,pouco2000_ros::Buttons::_data_type,pouco2000_ros::Buttons> HandleButtons;
+typedef Handle<Potentiometer,pouco2000_ros::Potentiometers::_data_type,pouco2000_ros::Potentiometers> HandlePotentiometers;
