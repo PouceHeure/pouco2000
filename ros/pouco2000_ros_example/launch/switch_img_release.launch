@@ -1,0 +1,18 @@
+<launch>
+    <include file="$(find pouco2000_ros)/launch/release.launch"/>
+    <!-- ns_test namespace avoid conflict with the real controller -->
+    <group ns="ns_release">
+        <!-- gateway node between controller and img -->
+        <node pkg="pouco2000_ros_example" type="switch_img_node" name="switch_img_node"/>
+        
+        <node pkg="ros_popup_img" type="generator_node.py" name="generator_node" output="screen">
+            <remap from="image_sub" to="switch_state_img"/>
+            <remap from="image_pub" to="switch_state_img_generated"/>
+        </node>
+
+        <node pkg="rqt_image_view" type="rqt_image_view" name="rqt_image_view_node">
+            <param name="topic" value="switch_state_img_generated"/>
+        </node>
+    </group>
+
+</launch>
