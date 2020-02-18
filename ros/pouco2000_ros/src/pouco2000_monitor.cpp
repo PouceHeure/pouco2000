@@ -89,14 +89,14 @@ ColorString LabelView::draw(){
 
 /* TitleLabelView */
 
-TitleLabelView::TitleLabelView(std::string label, int width, 
-                                char char_line):
+TitleLabelView::TitleLabelView(std::string label, unsigned short& width, 
+                                char char_line):width(width),
 LabelView(label){
     this->width = width;
     this->char_line = char_line;
 }
 
-TitleLabelView::TitleLabelView(std::string label, int width):
+TitleLabelView::TitleLabelView(std::string label, unsigned short& width):
 TitleLabelView(label,width,TitleLabelView::CHAR_LINE){
 
 }
@@ -170,7 +170,7 @@ int SwitchView<bool>::define_val_selected(){
 
 template<>
 int SwitchView<int>::define_val_selected(){
-    if(this->value == 1){
+    if(this->value == 0){
         return 0;
     }
     return 1;
@@ -228,13 +228,9 @@ ColorString ContainerHorizontal::draw(){
  
 const std::string ContainerNColumns::LINE_SEPARATOR = " | ";
 
-ContainerNColumns::ContainerNColumns(int cols_or_width, bool is_auto=false):Container(){
+ContainerNColumns::ContainerNColumns(unsigned short& cols_or_width, bool is_auto=false):width(cols_or_width),Container(){
     this->is_auto = is_auto;
-    if(is_auto){
-        this->width = cols_or_width;
-    }else{
-        this->cols = cols_or_width;
-    }
+    this->cols = cols_or_width;
 }
 
 ColorString ContainerNColumns::draw(){
@@ -282,8 +278,7 @@ ColorString ContainerNColumns::draw(){
  
 /* Monitor */
  
-Monitor::Monitor(ros::NodeHandle& nh, std::string topic, int width_cols, std::string title):ContainerVertical(){
-    this->width_cols = width_cols;   
+Monitor::Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title):ContainerVertical(),width_cols(width_cols){  
     this->sub = nh.subscribe<pouco2000_ros::Controller>(topic, 1000, &Monitor::callback, this);
 
     TitleLabelView* v_title = new TitleLabelView(title,width_cols,'#');
@@ -296,7 +291,7 @@ Monitor::Monitor(ros::NodeHandle& nh, std::string topic, int width_cols, std::st
     ch_seq->add_view(view_seq_value);
 
     this->add_view(ch_seq);
-}
+} 
 
 ContainerVertical* Monitor::create_part(std::string title, Container* cv){
     ContainerVertical* cv_global = new ContainerVertical();

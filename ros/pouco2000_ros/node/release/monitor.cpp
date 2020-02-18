@@ -12,7 +12,14 @@ int main(int argc, char **argv){
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
 
     Monitor m(n,"controller",size.ws_col,"Pouco2000 Monitor");
-    ros::spin();
+    
+    ros::Rate r(10);
+
+    while(ros::ok()){
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+        ros::spinOnce();
+        r.sleep();
+    }
 
     return 0;
 }

@@ -118,10 +118,11 @@ class TitleLabelView: public LabelView{
 
         char char_line;
         int nb_new_lines;
-        int width;
+        unsigned short& width;
+
     public: 
-        TitleLabelView(std::string label, int width);
-        TitleLabelView(std::string label, int width,char char_line);
+        TitleLabelView(std::string label, unsigned short& width);
+        TitleLabelView(std::string label, unsigned short& width,char char_line);
         ColorString draw();
 };
 
@@ -216,7 +217,6 @@ ColorString SwitchView<T>::draw(){
         result.add(valB,SwitchView::COLOR_UNSELECTED);
     }
     result.add("]");
-    //std::string result = "["+ result_a + "|" + result_b + "]";
     return result;
 };
 
@@ -261,7 +261,7 @@ class ContainerNColumns: public Container {
     private: 
         static const std::string LINE_SEPARATOR;
         int cols;
-        int width;
+        unsigned short& width;
         bool is_auto;
     public:
         /**
@@ -270,7 +270,7 @@ class ContainerNColumns: public Container {
          * @param cols_or_width define the number of colos or the width of the terminal 
          * @param is_auto define if the container compute N columns automatically or not 
          */
-        ContainerNColumns(int cols_or_width,bool is_auto);
+        ContainerNColumns(unsigned short& cols_or_width,bool is_auto);
         ColorString draw(); 
 };
 
@@ -281,7 +281,7 @@ class ContainerNColumns: public Container {
  */
 class Monitor: public ContainerVertical {
     private: 
-        int width_cols;
+        unsigned short& width_cols;
 
         ros::Subscriber sub;
 
@@ -318,7 +318,7 @@ class Monitor: public ContainerVertical {
 
 
     public: 
-        Monitor(ros::NodeHandle& nh, std::string topic, int width_cols, std::string title);
+        Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title);
    
         
 };
