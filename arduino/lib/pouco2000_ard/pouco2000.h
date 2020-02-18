@@ -1,16 +1,24 @@
-#include <Arduino.h>
+#include<Arduino.h>
+//ros lib 
 #include <ros.h>
-
+//msg lib 
+#include <pouco2000_ros/SwitchsMode.h>
 #include <pouco2000_ros/SwitchsOnOff.h>
 #include <pouco2000_ros/Buttons.h>
 #include <pouco2000_ros/Potentiometers.h>
 
-#define DEBUG_SERIAL 
 
+
+/* struct fields */
 
 struct Switch {
   int pin; 
   bool value = false;
+};
+
+struct SwitchMode {
+  int pin; 
+  int value = false;
 };
 
 struct Button {
@@ -23,21 +31,59 @@ struct Potentiometer{
   int value = 0;
 };
 
+/* handle */ 
+
+/**
+ * @brief Handle a set of element from a same field. 
+ * 
+ * @tparam T_field struct of the field 
+ * @tparam T_data type of data used by the field 
+ * @tparam T_msg type of msg sent 
+ */
 template<typename T_field, typename T_data, typename T_msg>
 class Handle{
-  private: 
+  private:
+    // publisher used to sent data to ROS 
     ros::Publisher* pub;
     T_field* elements;
     T_data* data;
     T_msg msg;
-
+    // number of elements  
     int n_connections;
+    // define if the field use digital port or analog port 
     bool is_digital;
-  
+
   public:
-    Handle(char* topic);
+    /**
+     * @brief Construct a new Handle object
+     * The construction set by default is_digital to true. 
+     * @param topic topic where the message will be published 
+     * @param connections array of connections
+     * @param n_connections number of connections 
+     */
+    Handle(char* topic,int* connections,int n_connections);
+
+    /**
+     * @brief Construct a new Handle object
+     * 
+     * @param topic topic where the message will be published
+     * @param connections array of connections
+     * @param n_connections number of connections 
+     * @param is_digital if the field use digital or analog port 
+     */
     Handle(char* topic,int* connections,int n_connections, bool is_digital);
+
+    /**
+     * @brief setup the current handle, declare the publisher to the NodeHandle and 
+     * set the pinMode of each pin to INPUT  
+     * @param nh current nodehandle 
+     */
     void setup(ros::NodeHandle& nh);
+
+    /**
+     * @brief update msg used by the handle in checking state of pin 
+     * 
+     */
     void update();
 };
 
@@ -48,7 +94,8 @@ Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connecti
   this->data = static_cast< T_data* >(malloc(n_connections * sizeof(T_data)));
   this->n_connections = n_connections;
   this->is_digital = _is_digital;
- 
+  
+  // create a new element for each pin
   for(int i=0;i<this->n_connections;i++){
     T_field* new_element = static_cast< T_field* >(malloc(1 * sizeof(T_field)));
     new_element->pin = connections[i];
@@ -59,8 +106,12 @@ Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connecti
 }
 
 template<typename T_field, typename T_data, typename T_msg>
+Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connections):Handle(topic, connections,n_connections, true){
+
+}
+
+template<typename T_field, typename T_data, typename T_msg>
 void Handle<T_field,T_data,T_msg>::setup(ros::NodeHandle& nh){
-  nh.loginfo("advertise pub");
   nh.advertise(*(this->pub));
   for(int i=0;i<this->n_connections;i++){
     pinMode(elements[i].pin,INPUT);
@@ -70,25 +121,41 @@ void Handle<T_field,T_data,T_msg>::setup(ros::NodeHandle& nh){
 
 template<typename T_field, typename T_data, typename T_msg>
 void Handle<T_field,T_data,T_msg>::update(){
-  T_data tmp_var;
-  
+  // read current state of each pin 
   for(int i=0;i<this->n_connections;i++){
     if(is_digital){
-      tmp_var = digitalRead(elements[i].pin);
+      this->data[i] = digitalRead(elements[i].pin);
     }else{
-      tmp_var = analogRead(elements[i].pin);
+      this->data[i] = analogRead(elements[i].pin);
     }
-    this->data[i] = tmp_var;
-    if(tmp_var != elements[i].value){
-      elements[i].value = tmp_var;
-    }
+    elements[i].value = this->data[i];
   }
-
   msg.data = this->data;
   pub->publish(&msg);
 }
 
+/* typedef */
 
+/**
+ * @brief Handle used by Switchs On Off type
+ * 
+ */
 typedef Handle<Switch,pouco2000_ros::SwitchsOnOff::_data_type,pouco2000_ros::SwitchsOnOff> HandleSwitchsOnOff;
+
+/**
+ * @brief Handle used by Switchs Mode type
+ * 
+ */
+typedef Handle<SwitchMode,pouco2000_ros::SwitchsMode::_data_type,pouco2000_ros::SwitchsMode> HandleSwitchsMode;
+
+/**
+ * @brief Handle used by Buttons 
+ * 
+ */
 typedef Handle<Button,pouco2000_ros::Buttons::_data_type,pouco2000_ros::Buttons> HandleButtons;
+
+/**
+ * @brief Handle used by Potentiometers (circle or slider)
+ * 
+ */
 typedef Handle<Potentiometer,pouco2000_ros::Potentiometers::_data_type,pouco2000_ros::Potentiometers> HandlePotentiometers;
