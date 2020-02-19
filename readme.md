@@ -2,7 +2,6 @@
 
 :warning: in development  
  
-
 ## ROS Package 
 A project ros has been developped, called *pouco2000_ros*, this package receives data from electronic part, and regroups these message into one msg. 
 
@@ -40,12 +39,94 @@ catkin build pouco2000_ros
 
 ### Documention 
 
-a *rosdoc* has been added to the CMakeLists, so when you will compile the package, a documentation folder will be added to package.
+a *rosdoc* command has been added to the CMakeLists, so when you will compile the package, a documentation folder will be added to package including a doxygen documentation.
 
+## Arduino Library 
 
-## Electronic 
+An arduino library has been developed, allowing to create easily a code. 
 
+### Place it 
 
+Like ROS package, the library need to be placed at the good place. It's possible to create a symbolic link.  
+
+```
+ln -s {arduino_lib/path} {arduino/path/libraries/}
+```
+
+### Setup it 
+
+The project uses ROSSERIAL package. Once the *pouco2000_ros* has been compiled, the header's msgs need to placed into arduino libraries. 
+
+The lib_ros generation can be done, by this command: 
+
+```
+rosrun rosserial_arduino make_libraries.py {arduino/path/libraires}
+```
+
+### Use it  
+
+For each field (buttons, switchs on off...), a handle object need to be created.  
+
+```C++
+/**
+ * @brief Construct a new Handle object
+ * 
+ * @param topic topic where the message will be published
+ * @param connections array of connections
+ * @param n_connections number of connections 
+ * @param is_digital if the field use digital or analog port 
+ */
+Handle<T_field,T_data,T_msg>::Handle(const char* topic,int* connections,int n_connections,bool is_digital)
+```
+In the setup method, the handle need to call a setup method. 
+
+```C++
+/**
+ * @brief setup the current handle, declare the publisher to the NodeHandle and 
+ * set the pinMode of each pin to INPUT  
+ * @param nh current nodehandle 
+ */
+void setup(ros::NodeHandle& nh);
+```
+
+In the loop method, the handle need to call a update method.
+
+```C++ 
+/**
+* @brief update msg used by the handle in checking state of pin 
+* 
+*/
+void update();
+```
+
+In the libraray, typical typedefs are already defined. 
+
+```C++
+
+typedef Handle<Switch,pouco2000_ros::SwitchsOnOff::_data_type,pouco2000_ros::SwitchsOnOff> HandleSwitchsOnOff;
+
+typedef Handle<SwitchMode,pouco2000_ros::SwitchsMode::_data_type,pouco2000_ros::SwitchsMode> HandleSwitchsMode;
+
+typedef Handle<Button,pouco2000_ros::Buttons::_data_type,pouco2000_ros::Buttons> HandleButtons;
+
+typedef Handle<Potentiometer,pouco2000_ros::Potentiometers::_data_type,pouco2000_ros::Potentiometers> HandlePotentiometers;
+```
+
+So, for each field you need:
+1. varibales definition (outside of setup and loop method) 
+   1. create a pin array, defining pin used by this field
+   2. create a handle for this field
+2. inside setup method 
+   1. call the setup of the handle with the current nodehandle
+3. inside loop method: 
+   1. call the update method of the handle 
+
+> Some examples has beed developed and added to the librarie. Theses examples can be loaded from the arduino IDE (file -> Examples -> pouco2000_ard). 
+
+### Warning 
+The library has been developed and tested on the following boards: 
+- arduino UNO
+- arduino nano 
 
 ## Modelization 
 
