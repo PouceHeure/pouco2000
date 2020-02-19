@@ -23,6 +23,8 @@
   <exec_depend>ros_popup_img</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+   <build_export_depend>geometry_msgs</build_export_depend>
+  <exec_depend>geometry_msgs</exec_depend>
 
   <export>
 
