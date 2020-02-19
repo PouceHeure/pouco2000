@@ -7,8 +7,6 @@
 #include <pouco2000_ros/Buttons.h>
 #include <pouco2000_ros/Potentiometers.h>
 
-
-
 /* struct fields */
 
 struct Switch {
@@ -61,7 +59,7 @@ class Handle{
      * @param connections array of connections
      * @param n_connections number of connections 
      */
-    Handle(char* topic,int* connections,int n_connections);
+    Handle(const char* topic,int* connections,int n_connections);
 
     /**
      * @brief Construct a new Handle object
@@ -71,7 +69,7 @@ class Handle{
      * @param n_connections number of connections 
      * @param is_digital if the field use digital or analog port 
      */
-    Handle(char* topic,int* connections,int n_connections, bool is_digital);
+    Handle(const char* topic,int* connections,int n_connections, bool is_digital);
 
     /**
      * @brief setup the current handle, declare the publisher to the NodeHandle and 
@@ -88,7 +86,7 @@ class Handle{
 };
 
 template<typename T_field, typename T_data, typename T_msg>
-Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connections,bool _is_digital){
+Handle<T_field,T_data,T_msg>::Handle(const char* topic,int* connections,int n_connections,bool _is_digital){
 
   this->elements = static_cast< T_field* >(malloc(n_connections * sizeof(T_field)));
   this->data = static_cast< T_data* >(malloc(n_connections * sizeof(T_data)));
@@ -106,7 +104,7 @@ Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connecti
 }
 
 template<typename T_field, typename T_data, typename T_msg>
-Handle<T_field,T_data,T_msg>::Handle(char* topic,int* connections,int n_connections):Handle(topic, connections,n_connections, true){
+Handle<T_field,T_data,T_msg>::Handle(const char* topic,int* connections,int n_connections):Handle(topic, connections,n_connections, true){
 
 }
 
