@@ -13,8 +13,8 @@ The package is generally based on 2 librairies *pouco2000* and *pouco2000_debug*
 
 The *pouco2000_ros* need to be placed inside your ros working space. It's possible to create a symbolic link inside your ros ws. 
 
-```
-ln -s {package/path} {ros_ws/path}
+``` shell
+USER$ ln -s {package/path} {ros_ws/path}
 ```
 
 (It's also possible to copy and paste the package)
@@ -23,14 +23,14 @@ ln -s {package/path} {ros_ws/path}
 
 Once moved or linked, the package need to be compiled. It's possbile to use catkin_make or catkin build. 
 
-```
+```shell
 ** go inside in your working space (at the root level) **
-catkin_make pouco2000_ros
+USER$ catkin_make pouco2000_ros
 ```
 or 
-```
+```shell
 ** go inside in your working space (at any level) **
-catkin build pouco2000_ros
+USER$ catkin build pouco2000_ros
 ```
 
 ### Use package 
@@ -49,8 +49,8 @@ An arduino library has been developed, allowing to create easily a code.
 
 Like ROS package, the library need to be placed at the good place. It's possible to create a symbolic link.  
 
-```
-ln -s {arduino_lib/path} {arduino/path/libraries/}
+```shell 
+USER$ ln -s {arduino_lib/path} {arduino/path/libraries/}
 ```
 
 ### Setup it 
@@ -59,9 +59,11 @@ The project uses ROSSERIAL package. Once the *pouco2000_ros* has been compiled, 
 
 The lib_ros generation can be done, by this command: 
 
+```shell
+USER$ rosrun rosserial_arduino make_libraries.py {arduino/path/libraires}
 ```
-rosrun rosserial_arduino make_libraries.py {arduino/path/libraires}
-```
+
+For more information about this package: [http://wiki.ros.org/rosserial](http://wiki.ros.org/rosserial) 
 
 ### Use it  
 
