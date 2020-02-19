@@ -65,12 +65,12 @@ enum SendMode {
 /**
  * @brief Regroups callback subscribers used by the Controller class  
  */
-namespace callback{
-    void buttons(const pouco2000_ros::Buttons::ConstPtr&,pouco2000_ros::Controller&);
-    void switchs_onoff(const pouco2000_ros::SwitchsOnOff::ConstPtr&,pouco2000_ros::Controller&);
-    void switchs_modes(const pouco2000_ros::SwitchsMode::ConstPtr&,pouco2000_ros::Controller&);
-    void potentiometers_circle(const pouco2000_ros::Potentiometers::ConstPtr&,pouco2000_ros::Controller&,ConvertisserPotentiometerToPercent&);
-    void potentiometers_slider(const pouco2000_ros::Potentiometers::ConstPtr&,pouco2000_ros::Controller&,ConvertisserPotentiometerToPercent&);
+namespace callback_field{
+    void buttons(const pouco2000_ros::Buttons::ConstPtr& msg,pouco2000_ros::Controller& msg_controller);
+    void switchs_onoff(const pouco2000_ros::SwitchsOnOff::ConstPtr& msg,pouco2000_ros::Controller& msg_controller);
+    void switchs_modes(const pouco2000_ros::SwitchsMode::ConstPtr& msg,pouco2000_ros::Controller& msg_controller);
+    void potentiometers_circle(const pouco2000_ros::Potentiometers::ConstPtr& msg,pouco2000_ros::Controller&,ConvertisserPotentiometerToPercent& msg_controller);
+    void potentiometers_slider(const pouco2000_ros::Potentiometers::ConstPtr& msg,pouco2000_ros::Controller&,ConvertisserPotentiometerToPercent& msg_controller);
 };
 
 /**

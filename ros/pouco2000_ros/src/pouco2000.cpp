@@ -105,26 +105,30 @@ void Controller::run(){
     }
 }
 
-void callback::buttons(const type_msg_buttons::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
-    msg_controller.buttons.data = msg->data;
-}
+namespace callback_field{
 
-void callback::switchs_onoff(const type_msg_switch_onoff::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
-    msg_controller.switchs_on_off.data = msg->data;
-}
+    void buttons(const type_msg_buttons::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
+        msg_controller.buttons.data = msg->data;
+    }
 
-void callback::switchs_modes(const type_msg_switch_modes::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
-    msg_controller.switchs_mode.data = msg->data;
-}
+    void switchs_onoff(const type_msg_switch_onoff::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
+        msg_controller.switchs_on_off.data = msg->data;
+    }
 
-void callback::potentiometers_circle(const type_msg_potentiometers::ConstPtr& msg,pouco2000_ros::Controller& msg_controller,ConvertisserPotentiometerToPercent& c){
-    type_msg_potentiometers new_msg;
-    new_msg.data = msg->data; 
-    msg_controller.potentiometers_circle = convert_potentiometers(c,new_msg);
-}
+    void switchs_modes(const type_msg_switch_modes::ConstPtr& msg,pouco2000_ros::Controller& msg_controller){
+        msg_controller.switchs_mode.data = msg->data;
+    }
 
-void callback::potentiometers_slider(const type_msg_potentiometers::ConstPtr& msg,pouco2000_ros::Controller& msg_controller,ConvertisserPotentiometerToPercent& c){
-    type_msg_potentiometers new_msg;
-    new_msg.data = msg->data; 
-    msg_controller.potentiometers_slider = convert_potentiometers(c,new_msg);
+    void potentiometers_circle(const type_msg_potentiometers::ConstPtr& msg,pouco2000_ros::Controller& msg_controller,ConvertisserPotentiometerToPercent& c){
+        type_msg_potentiometers new_msg;
+        new_msg.data = msg->data; 
+        msg_controller.potentiometers_circle = convert_potentiometers(c,new_msg);
+    }
+
+    void potentiometers_slider(const type_msg_potentiometers::ConstPtr& msg,pouco2000_ros::Controller& msg_controller,ConvertisserPotentiometerToPercent& c){
+        type_msg_potentiometers new_msg;
+        new_msg.data = msg->data; 
+        msg_controller.potentiometers_slider = convert_potentiometers(c,new_msg);
+    }
+
 }

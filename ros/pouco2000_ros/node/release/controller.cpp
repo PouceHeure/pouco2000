@@ -62,15 +62,15 @@ int main(int argc, char **argv){
   load_parameter_rate(controller,KEY_PARAM_RATE);
   controller.set_node_handle(n);
   controller.set_pub_controller("controller");
-  controller.set_sub_buttons("buttons",callback::buttons); 
+  controller.set_sub_buttons("buttons",callback_field::buttons); 
   // buttons 
   // switchs
-  controller.set_sub_switchs_onoff("switchs_onoff",callback::switchs_onoff);
-  controller.set_sub_switchs_modes("switchs_modes",callback::switchs_modes);
+  controller.set_sub_switchs_onoff("switchs_onoff",callback_field::switchs_onoff);
+  controller.set_sub_switchs_modes("switchs_modes",callback_field::switchs_modes);
   // potentiometers
-  auto callback_attach_convert_circle = boost::bind(&callback::potentiometers_circle,_1,_2,boost::ref(convert_potetiomerters_circle));
+  auto callback_attach_convert_circle = boost::bind(&callback_field::potentiometers_circle,_1,_2,boost::ref(convert_potetiomerters_circle));
   controller.set_sub_potentiometers_circle("potentiometers_circle",callback_attach_convert_circle);
-  auto callback_attach_convert_slider = boost::bind(&callback::potentiometers_slider,_1,_2,boost::ref(convert_potetiomerters_slider));
+  auto callback_attach_convert_slider = boost::bind(&callback_field::potentiometers_slider,_1,_2,boost::ref(convert_potetiomerters_slider));
   controller.set_sub_potentiometers_slider("potentiometers_slider",callback_attach_convert_slider);
   
   // run controller, starting the communication with ros    

@@ -40,7 +40,7 @@ TEST(TestPouco2000Lib, testWrapper)
     Controller c;
     c.set_send_mode(SendMode::freq);
     boost::function<void(const pouco2000_ros::Buttons::ConstPtr&,pouco2000_ros::Controller& current_msg)> buttons_callback;
-    buttons_callback = callback::buttons;
+    buttons_callback = callback_field::buttons;
     auto wrapper_callback = c.wrapper(buttons_callback);
     pouco2000_ros::Buttons fake_msg;
     fake_msg.data.push_back(true);
