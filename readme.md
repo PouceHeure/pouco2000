@@ -1,6 +1,25 @@
 # Pouco2000
 
-:warning: in development  
+:warning: in development 
+
+## Table of contents:
+
+- [Pouco2000](#pouco2000)
+  - [Table of contents:](#table-of-contents)
+  - [ROS Package](#ros-package)
+    - [Setup package](#setup-package)
+      - [Place it](#place-it)
+      - [Compile it](#compile-it)
+    - [Use package](#use-package)
+    - [Documention](#documention)
+  - [Arduino Library](#arduino-library)
+    - [Setup library](#setup-library)
+      - [Place it](#place-it-1)
+      - [Place ros_lib](#place-roslib)
+    - [Use library](#use-library)
+    - [Warning](#warning)
+  - [Modelization](#modelization)
+  - [Examples](#examples)
  
 ## ROS Package 
 A project ros has been developped, called *pouco2000_ros*, this package receives data from electronic part, and regroups these message into one msg. 
@@ -43,9 +62,11 @@ a *rosdoc* command has been added to the CMakeLists, so when you will compile th
 
 ## Arduino Library 
 
-An arduino library has been developed, allowing to create easily a code. 
+An arduino library has been developed, allowing to create easily a code.
 
-### Place it 
+### Setup library 
+
+#### Place it 
 
 Like ROS package, the library need to be placed at the good place. It's possible to create a symbolic link.  
 
@@ -53,7 +74,7 @@ Like ROS package, the library need to be placed at the good place. It's possible
 USER$ ln -s {arduino_lib/path} {arduino/path/libraries/}
 ```
 
-### Setup it 
+#### Place ros_lib
 
 The project uses ROSSERIAL package. Once the *pouco2000_ros* has been compiled, the header's msgs need to placed into arduino libraries. 
 
@@ -65,7 +86,7 @@ USER$ rosrun rosserial_arduino make_libraries.py {arduino/path/libraires}
 
 For more information about this package: [http://wiki.ros.org/rosserial](http://wiki.ros.org/rosserial) 
 
-### Use it  
+### Use library  
 
 For each field (buttons, switchs on off...), a handle object need to be created.  
 
