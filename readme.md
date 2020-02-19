@@ -21,7 +21,13 @@
 ## ROS Package 
 A project ros has been developped, called *pouco2000_ros*, this package receives data from electronic part, and regroups these message into one msg. 
 
-The package is generally based on 2 librairies *pouco2000* and *pouco2000_debug*. Debug librairie has been developed, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely depend packages. 
+The package is generally based on 2 librairies:
+- *pouco2000*, principal library, grouping Controller class definition. 
+- *pouco2000_debug*, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely depend packages.
+
+2 others libaries has been developed. 
+- pouco2000_introspection, grouping methods and classes allowing to filter a data from Controller msg. 
+- pouco2000_monitor, grouping methods and classes allowing to create a monitor.
 
 ### Setup package
 
