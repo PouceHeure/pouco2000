@@ -80,29 +80,37 @@ add_library(${PROJECT_NAME}_monitor
 ## Nodes release
 
 add_executable(controller_node node/release/controller.cpp)
+add_dependencies(controller_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(controller_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(filter_node node/release/filter.cpp)
+add_dependencies(filter_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(filter_node ${catkin_LIBRARIES} ${PROJECT_NAME}_introspection)
 
 add_executable(monitor_node node/release/monitor.cpp)
+add_dependencies(monitor_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(monitor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_monitor)
 
 ## Nodes debug
 
 add_executable(debug_fake_publisher_buttons_node node/debug/fake_publisher_buttons.cpp)
+add_dependencies(debug_fake_publisher_buttons_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_buttons_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
 add_executable(debug_fake_publisher_switchs_onoff_node node/debug/fake_publisher_switchs_onoff.cpp)
+add_dependencies(debug_fake_publisher_switchs_onoff_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_switchs_onoff_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
 add_executable(debug_fake_publisher_switchs_modes_node node/debug/fake_publisher_switchs_modes.cpp)
+add_dependencies(debug_fake_publisher_switchs_modes_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_switchs_modes_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
 add_executable(debug_fake_publisher_potentiometers_circle_node node/debug/fake_publisher_potentiometers_circle.cpp)
+add_dependencies(debug_fake_publisher_potentiometers_circle_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_potentiometers_circle_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
 add_executable(debug_fake_publisher_potentiometers_slider_node node/debug/fake_publisher_potentiometers_slider.cpp)
+add_dependencies(debug_fake_publisher_potentiometers_slider_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_potentiometers_slider_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
  
