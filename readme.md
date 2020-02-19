@@ -2,10 +2,7 @@
 
 :warning: in development 
 
-## Table of contents:
-
 - [Pouco2000](#pouco2000)
-  - [Table of contents:](#table-of-contents)
   - [ROS Package](#ros-package)
     - [Setup package](#setup-package)
       - [Place it](#place-it)
