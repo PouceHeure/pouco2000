@@ -1,0 +1,2 @@
+type: "velocity_controllers/JointVelocityController"
+joint: base_beacon_rot_joint

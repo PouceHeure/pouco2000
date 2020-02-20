@@ -1,0 +1,3 @@
+type: "position_controllers/JointPositionController"
+joint: base_beacon_trans_joint
+

@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<robot name="simple_robot">
+
+  <!-- colors definitions -->
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <!-- links definitions -->
+
+  <!-- lvls definitions -->
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+            <box size="1 0.8 0.2" />
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+            <box size="1 0.8 0.2"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="lvl_0">
+    <visual>
+      <geometry>
+            <box size="1 0.8 0.1" />
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+  <link name="lvl_1">
+    <visual>
+      <geometry>
+            <box size="1 0.8 0.1" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <!-- headlights definitions -->
+
+  <link name="headlight_left">
+    <visual>
+      <geometry>
+            <box size="0.05 0.2 0.2" />
+      </geometry>
+      <material name="yellow"/>
+      <origin rpy="-0.39269 0 0" xyz="0 0 0"/>
+    </visual>
+  </link>
+
+  <link name="headlight_rigth">
+    <visual>
+      <geometry>
+            <box size="0.05 0.2 0.2" />
+      </geometry>
+      <origin rpy="0.39269 0 0" xyz="0 0 0"/>
+      <material name="yellow"/>
+    </visual>
+  </link>
+
+  <link name="headlight_back_top">
+    <visual>
+      <geometry>
+            <box size="0.05 0.5 0.05" />
+      </geometry>
+      
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="headlight_back_bottom">
+    <visual>
+      <geometry>
+            <box size="0.05 0.5 0.05" />
+      </geometry>
+      
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <!-- wheels definitions -->
+
+  <link name="wheel_left_top">
+    <visual>
+      <geometry>
+            <cylinder length="0.1" radius="0.15"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </visual>
+  </link>
+
+  <link name="wheel_left_bottom">
+    <visual>
+      <geometry>
+            <cylinder length="0.1" radius="0.15"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </visual>
+  </link> 
+
+  <link name="wheel_rigth_top">
+    <visual>
+      <geometry>
+            <cylinder length="0.1" radius="0.15"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </visual>
+  </link> 
+  
+  <link name="wheel_rigth_bottom">
+    <visual>
+      <geometry>
+            <cylinder length="0.1" radius="0.15"/>
+      </geometry>
+      <material name="white"/>
+      <origin rpy="1.57075 0 0" xyz="0 0 0"/>
+    </visual>
+  </link> 
+
+  <!-- beacon !--> 
+
+  <link name="beacon_base">
+    <visual>
+      <geometry>
+            <cylinder length="0.05" radius="0.25"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link> 
+
+  <link name="beacon">
+    <visual>
+      <geometry>
+            <cylinder length="0.2" radius="0.2"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link> 
+
+  <link name="beacon_light">
+    <visual>
+      <geometry>
+            <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link> 
+
+
+  <!-- joint definitions -->
+
+  <joint name="base_lvl_0" type="fixed">
+    <parent link="base_link"/>
+    <child link="lvl_0"/>
+    <origin xyz="0 0 0.15"/>
+  </joint>
+
+  <joint name="base_lvl_1" type="fixed">
+    <parent link="base_link"/>
+    <child link="lvl_1"/>
+    <origin xyz="0 0 0.25"/>
+  </joint>
+
+  <joint name="lvl_0_headlight_left" type="fixed">
+    <parent link="lvl_0"/>
+    <child link="headlight_left"/>
+    <origin xyz="0.525 -0.20 0.0"/>
+  </joint>
+
+  <joint name="lvl_0_headlight_rigth" type="fixed">
+    <parent link="lvl_0"/>
+    <child link="headlight_rigth"/>
+    <origin xyz="0.525 0.20 0.0"/>
+  </joint>
+
+  <joint name="lvl_0_headlight_back_bottom" type="fixed">
+    <parent link="lvl_0"/>
+    <child link="headlight_back_bottom"/>
+    <origin xyz="-0.525 0.0 0.0"/>
+  </joint>
+
+  <joint name="lvl_1_headlight_back_top" type="fixed">
+    <parent link="lvl_1"/>
+    <child link="headlight_back_top"/>
+    <origin xyz="-0.525 0.0 0.0"/>
+  </joint>
+
+  <joint name="base_wheel_left_top" type="continuous">
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="wheel_left_top"/>
+    <origin xyz="0.25 0.45 0.0"/>
+  </joint>
+
+  <joint name="base_wheel_left_bottom" type="continuous">
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="wheel_left_bottom"/>
+    <origin xyz="-0.25 0.45 0.0"/>
+  </joint>
+
+  <joint name="base_wheel_rigth_top" type="continuous">
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="wheel_rigth_top"/>
+    <origin xyz="0.25 -0.45 0.0"/>
+  </joint>
+
+  <joint name="base_wheel_rigth_bottom" type="continuous">
+    <axis rpy="0 0 0" xyz="0 1 0"/>
+    <parent link="base_link"/>
+    <child link="wheel_rigth_bottom"/>
+    <origin xyz="-0.25 -0.45 0.0"/>
+  </joint>
+
+  <joint name="base_beacon_trans" type="prismatic">
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="beacon_base"/>
+    <limit effort="1000.0" lower="0" upper="0.30" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+
+  <joint name="base_beacon_rot" type="continuous">
+    <axis rpy="0 0 0" xyz="0 0 1"/>
+    <parent link="beacon_base"/>
+    <child link="beacon"/>
+    <limit effort="1000.0" lower="0" upper="0.40" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0 0 0.1"/>
+  </joint>
+
+  <joint name="beacon_light" type="fixed">
+    <parent link="beacon"/>
+    <child link="beacon_light"/>
+    <origin rpy="0 0 0" xyz="0.2 0 0"/>
+  </joint>
+
+
+
+
+
+</robot>

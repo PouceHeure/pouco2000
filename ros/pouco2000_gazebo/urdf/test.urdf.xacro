@@ -1,0 +1,331 @@
+<robot name="simple_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="pi" value="3.1415" />
+
+    <xacro:property name="width" value="1" />
+    <xacro:property name="height" value="0.8" />
+    <xacro:property name="depth" value="0.2" />
+    <xacro:property name="n_lvl" value="2" />
+
+    <xacro:property name="level_depth" value="0.1" />
+
+    <xacro:property name="headlight_front_width" value="0.05" />
+    <xacro:property name="headlight_front_height" value="0.2" />
+    <xacro:property name="headlight_front_depth" value="0.2" />
+    <xacro:property name="headlight_front_angle" value="${pi/8}" />
+
+    <xacro:property name="headlight_bottom_width" value="0.05" />
+    <xacro:property name="headlight_bottom_height" value="0.5" />
+    <xacro:property name="headlight_bottom_depth" value="0.05" />
+
+    <xacro:property name="wheel_len" value="0.1"/>
+    <xacro:property name="wheel_rad" value="0.15" />
+
+
+    <!-- colors definitions -->
+
+    <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+    </material>
+
+    <material name="black">
+    <color rgba="0 0 0 1"/>
+    </material>
+
+    <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+    </material>
+
+    <material name="white">
+    <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="red">
+    <color rgba="1 0 0 1"/>
+    </material>
+
+    <material name="yellow">
+    <color rgba="1 1 0 1"/>
+    </material>
+
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="level" params="lvl color">
+        <link name="level_${lvl}_link">
+            <visual>
+                <geometry>
+                    <box size="${width} ${height} ${level_depth}" />
+                </geometry>
+                <material name="${color}"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${width} ${height} ${level_depth}" />
+                </geometry>
+            </collision>
+            <xacro:default_inertial mass="5"/>
+        </link>
+
+        <joint name="level_${lvl}_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="level_${lvl}_link"/>
+            <origin xyz="0 0 ${level_depth/2 + depth/2 + lvl*level_depth}"/>
+        </joint>
+
+
+       
+    </xacro:macro>
+
+    <xacro:macro name="headlight_front" params="prefix reflect">
+        <link name="headlight_front_${prefix}_link">
+            <visual>
+                <geometry>
+                        <box size="${headlight_front_width} ${headlight_front_height} ${headlight_front_depth}" />
+                </geometry>
+                <material name="yellow"/>
+                <origin rpy="${reflect * headlight_front_angle} 0 0" xyz="0 0 0"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${headlight_front_width} ${headlight_front_height} ${headlight_front_depth}" />
+                </geometry>
+            </collision>
+            <xacro:default_inertial mass="0.05"/>
+        </link>
+
+         <joint name="headlight_front_${prefix}_joint" type="fixed">
+            <parent link="level_0_link"/>
+            <child link="headlight_front_${prefix}_link"/>
+            <origin xyz="${(width + headlight_front_width)/2} ${reflect * headlight_front_height} 0.0"/>
+        </joint>
+
+        <gazebo reference="headlight_front_${prefix}_link">
+            <material>Gazebo/YellowGlow </material>
+        </gazebo>
+        
+    </xacro:macro>
+
+    <xacro:macro name="headlight_back" params="lvl">
+        <link name="headlight_back_${lvl}_link">
+            <visual>
+                <geometry>
+                        <box size="${headlight_bottom_width} ${headlight_bottom_height} ${headlight_bottom_depth}" />
+                </geometry>
+                <material name="red"/>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${headlight_bottom_width} ${headlight_bottom_height} ${headlight_bottom_depth}" />
+                </geometry>
+            </collision>
+            <xacro:default_inertial mass="0.05"/>
+        </link>
+
+         <joint name="headlight_back_${lvl}_joint" type="fixed">
+            <parent link="level_${lvl}_link"/>
+            <child link="headlight_back_${lvl}_link"/>
+            <origin xyz="${-1*(width + headlight_bottom_width)/2} 0.0 0.0"/>
+        </joint>
+
+        <gazebo reference="headlight_back_${lvl}_link">
+            <material>Gazebo/Red</material>
+        </gazebo>
+       
+    </xacro:macro>
+
+    <xacro:macro name="wheel" params="side updown reflect_side reflect_updown">
+        <link name="wheel_${side}_${updown}_link">
+            <visual>
+                <geometry>
+                    <cylinder length="${wheel_len}" radius="${wheel_rad}"/>
+                </geometry>
+                <material name="white"/>
+                <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder length="${wheel_len}" radius="${wheel_rad}"/>
+                </geometry>
+                <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+            </collision>
+            <xacro:default_inertial mass="1"/>
+        </link>
+
+         <joint name="wheel_${side}_${updown}_joint" type="continuous">
+            <axis rpy="0 0 0" xyz="0 1 0"/>
+            <parent link="base_link"/>
+            <child link="wheel_${side}_${updown}_link"/>
+            <origin xyz="${reflect_updown*(width + wheel_len)/4} ${reflect_side*(height + wheel_rad)/2} 0.0"/>
+        </joint>
+
+        <gazebo reference="wheel_${side}_${updown}_link">
+            <mu1 value="200.0"/>
+            <mu2 value="100.0"/>
+            <kp value="10000000.0" />
+            <kd value="1.0" />
+            <material>Gazebo/Grey</material>
+        </gazebo>
+
+        <transmission name="wheel_${side}_${updown}_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <actuator name="wheel_${side}_${updown}_motor">
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+            <joint name="wheel_${side}_${updown}_joint">
+                <hardwareInterface>VelocityJointInterface</hardwareInterface>
+            </joint>
+        </transmission>
+    </xacro:macro>
+
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${width} ${height} ${depth}" />
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+        <geometry>
+                <box size="${width} ${height} ${depth}" />
+        </geometry>
+        </collision>
+        <xacro:default_inertial mass="10"/>
+    </link>
+
+    <gazebo reference="base_link">
+        <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+    <xacro:level lvl="0" color="gray"/>
+    <xacro:level lvl="1" color="gray"/>
+
+    <xacro:headlight_front prefix="left" reflect="1"/>
+    <xacro:headlight_front prefix="right" reflect="-1"/>*
+
+    <xacro:headlight_back lvl="0"/>
+    <xacro:headlight_back lvl="1"/>
+
+    <xacro:wheel side="left" updown="top" reflect_side="1" reflect_updown="1"/>
+    <xacro:wheel side="right" updown="top" reflect_side="-1" reflect_updown="1"/>
+    <xacro:wheel side="left" updown="bottom" reflect_side="1" reflect_updown="-1"/>
+    <xacro:wheel side="right" updown="bottom" reflect_side="-1" reflect_updown="-1"/>
+
+
+    <link name="beacon_base_link">
+        <visual>
+        <geometry>
+                <cylinder length="0.05" radius="0.25"/>
+        </geometry>
+        <material name="blue"/>
+        </visual>
+        <collision>
+                <geometry>
+                    <cylinder length="0.05" radius="0.25"/>
+                </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+        
+    </link> 
+
+    <gazebo reference="beacon_base_link">
+            <material>Gazebo/Black </material>
+    </gazebo>
+
+    <joint name="base_beacon_trans_joint" type="prismatic">
+        <axis rpy="0 0 0" xyz="0 0 1"/>
+        <parent link="base_link"/>
+        <child link="beacon_base_link"/>
+        <limit effort="1000.0" lower="0" upper="${depth/2 + n_lvl * level_depth}" velocity="0.5"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+
+    <transmission name="base_beacon_trans_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="$base_beacon_trans_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="base_beacon_trans_joint">
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <link name="beacon_link">
+        <visual>
+        <geometry>
+                <cylinder length="0.2" radius="0.2"/>
+        </geometry>
+        <material name="blue"/>
+        </visual>
+        <collision>
+                <geometry>
+                    <cylinder length="0.2" radius="0.2"/>
+                </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+        
+    </link> 
+
+    <gazebo reference="beacon_link">
+            <material>Gazebo/RedTransparent </material>
+    </gazebo>
+    
+    <joint name="base_beacon_rot_joint" type="continuous">
+        <axis rpy="0 0 0" xyz="0 0 1"/>
+        <parent link="beacon_base_link"/>
+        <child link="beacon_link"/>
+        <limit effort="30" velocity="100"/>
+        <origin rpy="0 0 0" xyz="0 0 0.1"/>
+    </joint>
+
+    <transmission name="base_beacon_rot_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="$base_beacon_rot_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="base_beacon_rot_joint">
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <link name="beacon_light_link">
+        <visual>
+        <geometry>
+                <box size="0.05 0.05 0.05"/>
+        </geometry>
+        <material name="yellow"/>
+        </visual>
+        <collision>
+                <geometry>
+                    <box size="0.05 0.05 0.05"/>
+                </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+        
+    </link> 
+
+    <gazebo reference="beacon_light_link">
+            <material>Gazebo/Yellow </material>
+    </gazebo>
+
+    <joint name="beacon_light_joint" type="fixed">
+        <parent link="beacon_link"/>
+        <child link="beacon_light_link"/>
+        <origin rpy="0 0 0" xyz="0.2 0 0"/>
+    </joint>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/</robotNamespace>
+        </plugin>
+  </gazebo>
+
+
+</robot>
