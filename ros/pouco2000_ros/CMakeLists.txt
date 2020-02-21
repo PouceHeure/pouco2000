@@ -37,16 +37,6 @@ generate_messages(
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
 
-
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES pouco2000_ros
-   CATKIN_DEPENDS message_generation roscpp std_msgs
-#  DEPENDS system_lib
-)
  
 ###########
 ## Build ##
@@ -77,18 +67,32 @@ add_library(${PROJECT_NAME}_monitor
   src/pouco2000_monitor.cpp
 )
 
+add_library(${PROJECT_NAME}_extractor
+  src/pouco2000_extractor.cpp
+)
+
+###################################
+## catkin specific configuration ##
+###################################
+catkin_package(
+  INCLUDE_DIRS include
+   LIBRARIES ${PROJECT_NAME} ${PROJECT_NAME}_extractor
+   CATKIN_DEPENDS message_generation roscpp std_msgs
+#  DEPENDS system_lib
+)
+
 ## Nodes release
 
 add_executable(controller_node node/release/controller.cpp)
-add_dependencies(controller_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(controller_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(filter_node node/release/filter.cpp)
-add_dependencies(filter_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(filter_node ${catkin_LIBRARIES} ${PROJECT_NAME}_introspection)
 
+add_executable(extractor_node node/release/extractor.cpp)
+target_link_libraries(extractor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_extractor)
+
 add_executable(monitor_node node/release/monitor.cpp)
-add_dependencies(monitor_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(monitor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_monitor)
 
 ## Nodes debug
@@ -113,15 +117,38 @@ add_executable(debug_fake_publisher_potentiometers_slider_node node/debug/fake_p
 add_dependencies(debug_fake_publisher_potentiometers_slider_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(debug_fake_publisher_potentiometers_slider_node ${catkin_LIBRARIES} ${PROJECT_NAME}_debug)
 
- 
 ## Generate package documentation with rosdoc_lite
 execute_process(COMMAND rospack find ${PROJECT_NAME} 
                 OUTPUT_VARIABLE PROJECT_DIR  
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND rosdoc_lite -o ${PROJECT_DIR}/doc/ ${PROJECT_DIR})
 
-
 if(CATKIN_ENABLE_TESTING)
   catkin_add_gtest(utest test/utest.cpp)
   target_link_libraries(utest ${catkin_LIBRARIES} ${PROJECT_NAME} ${PROJECT_NAME}_debug)
 endif()
+
+
+##################
+## Installation ##
+##################
+
+
+install(
+  TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+)
+
+install(
+  TARGETS ${PROJECT_NAME}_extractor
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+)
+
+install(
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
