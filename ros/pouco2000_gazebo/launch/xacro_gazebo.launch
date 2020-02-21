@@ -26,11 +26,26 @@
             file="$(find pouco2000_gazebo)/config/drive.yaml"
             ns="pouco2000Robot_diff_drive_controller" />
 
+  <rosparam command="load"
+            file="$(find pouco2000_gazebo)/config/forks.yaml"
+            ns="pouco2000Robot_forks_controller" />
+
+  <rosparam command="load"
+            file="$(find pouco2000_gazebo)/config/headlights_front.yaml"
+            ns="pouco2000Robot_headlights_front_controller" />
+
+  <rosparam command="load"
+            file="$(find pouco2000_gazebo)/config/headlights_back.yaml"
+            ns="pouco2000Robot_headlights_back_controller" />
+
   <node name="pouco2000Robot_controller_spawner" pkg="controller_manager" type="spawner"
     args="pouco2000Robot_joint_state_controller
           pouco2000Robot_diff_drive_controller
           pouco2000Robot_beacon_trans_controller
           pouco2000Robot_beacon_rot_controller
+          pouco2000Robot_forks_controller
+          pouco2000Robot_headlights_front_controller
+          pouco2000Robot_headlights_back_controller
           --shutdown-timeout 3"/>
 
   <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">

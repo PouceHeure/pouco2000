@@ -5,55 +5,116 @@
 #include "pouco2000_ros/Controller.h"
 #include "geometry_msgs/Twist.h"
 #include "std_msgs/Float64.h"
+#include "std_msgs/Bool.h"
 
 // lib cpp 
 #include <boost/function.hpp>
 
+#include <pouco2000_ros/pouco2000_extractor.hpp>
 
-float convertPercentToLinearX(const float value){
-  return value/50;
-}
 
-void callback(const pouco2000_ros::Controller::ConstPtr& msg, ros::Publisher& pub_v_robot, ros::Publisher& pub_v_beacon, ros::Publisher& pub_t_beacon, bool& is_on){
-    if(!msg->potentiometers_circle.data.empty()){
-        geometry_msgs::Twist twist_msg;
-        float value = msg->potentiometers_circle.data.at(0)/50;
-        twist_msg.linear.x = convertPercentToLinearX(value);
-        pub_v_robot.publish(twist_msg);
-    }
+class HardwareToController{
+    private: 
 
-    if(!msg->switchs_on_off.data.empty()){
-        bool local_is_on = msg->switchs_on_off.data.at(0);
-        if(local_is_on){
-            is_on = !is_on;
-            std_msgs::Float64 msg_t;
-            std_msgs::Float64 msg_v;
-            if(is_on){
-                msg_t.data = 10;
-                msg_v.data = 10;
-            }else{
-                msg_t.data = 0;
-                msg_v.data = 0;
-            }
-            pub_t_beacon.publish(msg_t);
-            pub_v_beacon.publish(msg_v);
+    ros::Publisher pub_hlf;
+    ros::Publisher pub_hlb;
+    ros::Publisher pub_beacon;
+    ros::Publisher pub_cmd_vel;
+    ros::Publisher pub_fork;
+    ros::Subscriber sub_controller;
+
+    bool hlf_is_on = false; 
+    bool hlb_is_on = false; 
+    bool beacon_is_on = false; 
+    bool fork_is_on = false; 
+
+    ExtractorButton* hlf_extractor;
+    ExtractorButton* hlb_extractor;
+    ExtractorButton* beacon_extractor;
+    ExtractorButton* fork_extractor;
+
+    ExtractorPotentiometersCircle* linear_extractor;
+    ExtractorPotentiometersCircle* rot_extractor;
+
+
+    void callback(const pouco2000_ros::Controller::ConstPtr& msg){
+        std_msgs ::Bool bool_msg;
+        if(hlf_extractor->is_push(msg)){
+            hlf_is_on = !hlf_is_on;
+            bool_msg.data = hlf_is_on;
+            pub_hlf.publish(bool_msg);
+        }
+        if(hlb_extractor->is_push(msg)){  
+            hlb_is_on = !hlb_is_on;
+            bool_msg.data = hlb_is_on;
+            pub_hlb.publish(bool_msg);
+        }
+        if(beacon_extractor->is_push(msg)){ 
+            beacon_is_on = !beacon_is_on;
+            bool_msg.data = beacon_is_on;
+            pub_beacon.publish(bool_msg);
+        }
+        if(fork_extractor->is_push(msg)){  
+            fork_is_on = !fork_is_on;
+            bool_msg.data = fork_is_on;
+            pub_fork.publish(bool_msg);
+        }
+        
+        float linear_value;
+        bool linear_ok = linear_extractor->extract(msg,linear_value);
+        
+        float rot_value;
+        bool rot_ok = rot_extractor->extract(msg,rot_value);
+        
+        if(linear_ok && rot_ok){
+            geometry_msgs::Twist twist_msg;
+            twist_msg.linear.x = linear_value/20;
+            twist_msg.angular.z = rot_value/20;
+            pub_cmd_vel.publish(twist_msg);
         }
     }
-}
+
+    public: 
+    HardwareToController(ros::NodeHandle& nh, 
+                         const std::string& topic_controller,
+                         const std::string& topic_hlf,
+                         const std::string& topic_hlb,
+                         const std::string& topic_beacon,
+                         const std::string& topic_fork,
+                         const std::string& topic_cmd_vel){
+    
+    this->pub_hlf = nh.advertise<std_msgs::Bool>(topic_hlf,10);
+    this->pub_hlb = nh.advertise<std_msgs::Bool>(topic_hlb,10);
+    this->pub_beacon = nh.advertise<std_msgs::Bool>(topic_beacon,10);
+    this->pub_cmd_vel = nh.advertise<geometry_msgs::Twist>(topic_cmd_vel,10);
+    this->pub_fork = nh.advertise<std_msgs::Bool>(topic_fork,10);
+    this->sub_controller = nh.subscribe<pouco2000_ros::Controller>(topic_controller,1000,&HardwareToController::callback,this);
+    
+    hlf_extractor = new ExtractorButton(0);
+    hlb_extractor = new ExtractorButton(1);
+    beacon_extractor = new ExtractorButton(2);
+    fork_extractor = new ExtractorButton(3);
+
+    linear_extractor = new ExtractorPotentiometersCircle(0);
+    rot_extractor = new ExtractorPotentiometersCircle(1);
+
+    }
+
+
+};
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "simple_controller_node");
   ros::NodeHandle nh;
 
-  bool is_on = false;
-
-  ros::Publisher pub_v_robot = nh.advertise<geometry_msgs::Twist>("/pouco2000Robot_diff_drive_controller/cmd_vel",100);
-  ros::Publisher pub_v_beacon = nh.advertise<std_msgs::Float64>("/pouco2000Robot_beacon_rot_controller/command",100);
-  ros::Publisher pub_t_beacon = nh.advertise<std_msgs::Float64>("pouco2000Robot_beacon_trans_controller/command",100);
-
-  auto callback_twist = boost::bind(&callback,_1,boost::ref(pub_v_robot),boost::ref(pub_v_beacon),boost::ref(pub_t_beacon),boost::ref(is_on));
-  ros::Subscriber sub = nh.subscribe<pouco2000_ros::Controller>("/ns_release/controller",1000,callback_twist);
-  
+  HardwareToController h_to_controller(nh,
+                      "/ns_release/controller",
+                      "/controller/headlight_front",
+                      "/controller/headlight_back",
+                      "/controller/fork",
+                      "/controller/beacon",
+                      "/controller/cmdvel"
+                      );
   ros::spin();
 
   return 0;

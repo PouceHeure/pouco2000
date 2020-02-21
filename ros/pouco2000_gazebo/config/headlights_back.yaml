@@ -1,0 +1,5 @@
+type: "position_controllers/JointGroupPositionController"
+joints: 
+  - headlight_back_0_joint
+  - headlight_back_1_joint
+

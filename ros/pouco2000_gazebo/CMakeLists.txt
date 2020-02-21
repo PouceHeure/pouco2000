@@ -51,3 +51,9 @@ include_directories(
 add_executable(simple_controller_node node/simple_controller.cpp)
 add_dependencies(simple_controller_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(simple_controller_node ${catkin_LIBRARIES})
+
+
+
+add_executable(controller_node node/controller.cpp)
+add_dependencies(controller_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(controller_node ${catkin_LIBRARIES})

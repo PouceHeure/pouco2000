@@ -1,0 +1,3 @@
+type: "position_controllers/JointPositionController"
+joint: headlight_front_base_joint
+
