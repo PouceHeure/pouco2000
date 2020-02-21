@@ -19,3 +19,5 @@ pouco2000_ros::Potentiometers extract::field_potentiometers_circle(const pouco20
 pouco2000_ros::Potentiometers extract::field_potentiometers_slider(const pouco2000_ros::Controller::ConstPtr& msg){
     return msg->potentiometers_slider;
 }
+
+

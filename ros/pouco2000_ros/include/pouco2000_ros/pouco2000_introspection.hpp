@@ -4,6 +4,7 @@
 //lib ros 
 #include <ros/ros.h>
 //msgs  
+#include <std_msgs/Bool.h>
 #include <pouco2000_ros/Controller.h>
 #include <pouco2000_ros/Buttons.h>
 #include <pouco2000_ros/SwitchsOnOff.h>
@@ -83,3 +84,6 @@ void FilterPublisher<T_msg_send,T_msg_field>::callback(const pouco2000_ros::Cont
         ROS_WARN("[topic:%s] [index:%d] error: out of range",this->pub.getTopic().c_str(),position);
     }
 }
+
+
+
