@@ -10,6 +10,7 @@
 // lib cpp 
 #include <pouco2000_ros/pouco2000_extractor.hpp>
 
+#define ESPILONE 1
 
 class HardwareToController{
     
@@ -34,6 +35,8 @@ class HardwareToController{
 
     ExtractorPotentiometerCircle* linear_extractor;
     ExtractorPotentiometerCircle* rot_extractor;
+
+    ExtractorSwitchOnOff* back_extractor;
 
     void callback(const pouco2000_ros::Controller::ConstPtr& msg){
         std_msgs ::Bool bool_msg;
@@ -63,11 +66,22 @@ class HardwareToController{
         
         float rot_value;
         bool rot_ok = rot_extractor->extract(msg,rot_value);
+
+        int sign_direction = 1;
+        bool bool_direction;
+        if(back_extractor->extract(msg,bool_direction)){
+            if(bool_direction){
+                sign_direction = -1;
+            }
+        }
         
         if(linear_ok && rot_ok){
             geometry_msgs::Twist twist_msg;
-            twist_msg.linear.x = linear_value/20;
-            twist_msg.angular.z = rot_value/20;
+            twist_msg.linear.x = sign_direction * linear_value/20;
+            float dist_0 = abs(rot_value - 50);
+            if(dist_0 > ESPILONE){
+                twist_msg.angular.z = abs(rot_value - 50)/20 * (rot_value >= 50 ? -1 : 1);
+            }
             pub_cmd_vel.publish(twist_msg);
         }
     }
@@ -95,6 +109,8 @@ class HardwareToController{
 
     linear_extractor = new ExtractorPotentiometerCircle(0);
     rot_extractor = new ExtractorPotentiometerCircle(1);
+
+    back_extractor = new ExtractorSwitchOnOff(0);
 
     }
 
