@@ -1,5 +1,7 @@
 <robot name="simple_robot" xmlns:xacro="http://ros.org/wiki/xacro">
 
+    <!-- definition properties -->
+
     <xacro:property name="pi" value="3.1415" />
 
     <xacro:property name="width" value="1" />
@@ -32,7 +34,6 @@
     <xacro:property name="fork_rad" value="0.02"/>
     <xacro:property name="fork_base_width" value="0.10"/>
 
-
     <!-- colors definitions -->
 
     <material name="blue">
@@ -59,6 +60,10 @@
     <color rgba="1 1 0 1"/>
     </material>
 
+    <!-- macros definition -->
+
+    <!-- macro: default_inertial -->
+
     <xacro:macro name="default_inertial" params="mass">
         <inertial>
             <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -66,6 +71,8 @@
             <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
         </inertial>
     </xacro:macro>
+
+    <!-- macro: level -->
 
     <xacro:macro name="level" params="lvl color">
         <link name="level_${lvl}_link">
@@ -89,9 +96,9 @@
             <origin xyz="0 0 ${level_depth/2 + depth/2 + lvl*level_depth}"/>
         </joint>
 
-
-       
     </xacro:macro>
+
+    <!-- macro: headlight_front -->
 
     <xacro:macro name="headlight_front" params="prefix reflect">
         <link name="headlight_front_${prefix}_link">
@@ -121,6 +128,8 @@
         </gazebo>
         
     </xacro:macro>
+
+    <!-- macro: headlight_back -->
 
     <xacro:macro name="headlight_back" params="lvl">
         <link name="headlight_back_${lvl}_link">
@@ -163,6 +172,8 @@
        
     </xacro:macro>
 
+    <!-- macro: fork -->
+
     <xacro:macro name="fork" params="lvl">
         <link name="fork_${lvl}_link">
             <visual>
@@ -190,6 +201,8 @@
         </gazebo>
        
     </xacro:macro>
+
+    <!-- macro: wheel -->
 
     <xacro:macro name="wheel" params="side updown reflect_side reflect_updown">
         <link name="wheel_${side}_${updown}_link">
@@ -236,6 +249,10 @@
     </xacro:macro>
 
 
+    <!-- definition links -->
+
+    <!-- link: base_link -->
+
     <link name="base_link">
         <visual>
             <geometry>
@@ -255,8 +272,12 @@
         <material>Gazebo/DarkGrey</material>
     </gazebo>
 
+    <!-- links: level -->
+
     <xacro:level lvl="0" color="gray"/>
     <xacro:level lvl="1" color="gray"/>
+
+    <!-- links: headlight_front -->
 
     <xacro:headlight_front prefix="left" reflect="1"/>
     <xacro:headlight_front prefix="right" reflect="-1"/>
@@ -294,18 +315,25 @@
         </joint>
     </transmission>
 
+    <!-- links: headlight_back -->
+    
+    <xacro:headlight_back lvl="0"/>
+    <xacro:headlight_back lvl="1"/>
+
+    <!-- links: beacon -->
 
     <gazebo reference="beacon_base_link">
             <material>Gazebo/Black</material>
     </gazebo>
 
-    <xacro:headlight_back lvl="0"/>
-    <xacro:headlight_back lvl="1"/>
+    <!-- links: wheel -->
 
     <xacro:wheel side="left" updown="top" reflect_side="1" reflect_updown="1"/>
     <xacro:wheel side="right" updown="top" reflect_side="-1" reflect_updown="1"/>
     <xacro:wheel side="left" updown="bottom" reflect_side="1" reflect_updown="-1"/>
     <xacro:wheel side="right" updown="bottom" reflect_side="-1" reflect_updown="-1"/>
+
+    <!-- links: fork -->
 
     <link name="fork_base_link">
         <visual>
@@ -340,21 +368,13 @@
         <origin xyz="${(width - fork_base_width)/2 - fork_len - free_space} 0 0.0"/>
     </joint>
 
-    <transmission name="base_beacon_trans_trans">
-        <type>transmission_interface/SimpleTransmission</type>
-        <actuator name="$base_beacon_trans_motor">
-            <mechanicalReduction>1</mechanicalReduction>
-        </actuator>
-        <joint name="base_beacon_trans_joint">
-        <hardwareInterface>PositionJointInterface</hardwareInterface>
-        </joint>
-    </transmission>
-
     <xacro:fork lvl="0"/>
     <xacro:fork lvl="1"/>
     <xacro:fork lvl="2"/>
     <xacro:fork lvl="3"/>
     <xacro:fork lvl="4"/>
+
+    <!-- links: beacon -->
 
     <link name="beacon_base_link">
         <visual>

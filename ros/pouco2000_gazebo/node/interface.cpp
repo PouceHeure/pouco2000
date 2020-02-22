@@ -8,14 +8,13 @@
 #include "std_msgs/Bool.h"
 
 // lib cpp 
-#include <boost/function.hpp>
-
 #include <pouco2000_ros/pouco2000_extractor.hpp>
 
 
 class HardwareToController{
+    
     private: 
-
+    
     ros::Publisher pub_hlf;
     ros::Publisher pub_hlb;
     ros::Publisher pub_beacon;
@@ -33,9 +32,8 @@ class HardwareToController{
     ExtractorButton* beacon_extractor;
     ExtractorButton* fork_extractor;
 
-    ExtractorPotentiometersCircle* linear_extractor;
-    ExtractorPotentiometersCircle* rot_extractor;
-
+    ExtractorPotentiometerCircle* linear_extractor;
+    ExtractorPotentiometerCircle* rot_extractor;
 
     void callback(const pouco2000_ros::Controller::ConstPtr& msg){
         std_msgs ::Bool bool_msg;
@@ -59,7 +57,7 @@ class HardwareToController{
             bool_msg.data = fork_is_on;
             pub_fork.publish(bool_msg);
         }
-        
+
         float linear_value;
         bool linear_ok = linear_extractor->extract(msg,linear_value);
         
@@ -95,8 +93,8 @@ class HardwareToController{
     beacon_extractor = new ExtractorButton(2);
     fork_extractor = new ExtractorButton(3);
 
-    linear_extractor = new ExtractorPotentiometersCircle(0);
-    rot_extractor = new ExtractorPotentiometersCircle(1);
+    linear_extractor = new ExtractorPotentiometerCircle(0);
+    rot_extractor = new ExtractorPotentiometerCircle(1);
 
     }
 
@@ -104,7 +102,7 @@ class HardwareToController{
 };
 
 int main(int argc, char **argv){
-  ros::init(argc, argv, "simple_controller_node");
+  ros::init(argc, argv, "interface_node");
   ros::NodeHandle nh;
 
   HardwareToController h_to_controller(nh,

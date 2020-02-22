@@ -48,9 +48,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(simple_controller_node node/simple_controller.cpp)
-add_dependencies(simple_controller_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(simple_controller_node ${catkin_LIBRARIES})
+add_executable(interface_node node/interface.cpp)
+add_dependencies(interface_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(interface_node ${catkin_LIBRARIES})
 
 
 

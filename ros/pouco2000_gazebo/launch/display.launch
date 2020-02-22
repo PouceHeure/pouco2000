@@ -1,6 +1,6 @@
 <launch>
 
-    <arg name="model" default="$(find pouco2000_gazebo)/urdf/test.urdf"/>
+    <arg name="model" default="$(find pouco2000_gazebo)/urdf/pouco2000.urdf"/>
     <arg name="gui" default="true" />
     <arg name="rvizconfig" default="$(find pouco2000_gazebo)/rviz/urdf.rviz" />
 
