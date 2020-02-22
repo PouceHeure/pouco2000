@@ -38,6 +38,12 @@
     <xacro:property name="antenna_rad" value="0.01"/>
     <xacro:property name="antenna_space" value="0.1"/>
 
+    <xacro:property name="disc_len" value="0.02"/>
+    <xacro:property name="disc_rad" value="${width/3}"/>
+    <xacro:property name="disc_depth" value="0.05"/>
+    <xacro:property name="disc_scale" value="0.05"/>
+
+
     <!-- colors definitions -->
 
     <material name="blue">
@@ -253,6 +259,7 @@
     </xacro:macro>
 
 
+
     <!-- definition links -->
 
     <!-- link: base_link -->
@@ -342,13 +349,13 @@
     <link name="fork_base_link">
         <visual>
             <geometry>
-                <box size="${fork_base_width} ${height} ${depth/10}"/>
+                <box size="${fork_base_width - free_space} ${height - free_space} ${depth/10}"/>
             </geometry>
         <material name="blue"/>
         </visual>
         <collision>
             <geometry>
-                  <box size="${fork_base_width} ${height} ${depth/10}"/>
+                  <box size="${fork_base_width - free_space} ${height - free_space} ${depth/10}"/>
             </geometry>
         </collision>
         <xacro:default_inertial mass="1"/>
@@ -508,6 +515,83 @@
         <child link="antenna_link"/>
         <origin rpy="0 0 0" xyz="${width/2 - antenna_space} ${height/2  - antenna_space} ${level_depth/2}"/>
     </joint>
+
+    <!-- links: disk -->
+
+    <link name="disc_base_link">
+        <visual>
+            <geometry>
+                <box size="${fork_base_width - free_space} ${height - free_space} ${depth/10}"/>
+            </geometry>
+        <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                  <box size="${fork_base_width - free_space} ${height - free_space} ${depth/10}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link> 
+
+    <transmission name="disc_base_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="disc_base_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="disc_base_joint">
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <joint name="disc_base_joint" type="prismatic">
+        <axis rpy="0 0 0" xyz="1 0 0"/>
+        <parent link="base_link"/>
+        <child link="disc_base_link"/>
+        <limit effort="10" lower="0" upper="${disc_rad}" velocity="0.5"/>
+        <origin xyz="${(width)/2 - disc_rad - free_space - fork_base_width/2} 0 ${-1*disc_depth}"/>
+    </joint>
+
+
+
+    <link name="disc_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://pouco2000_gazebo/meshes/disc/disc.STL" scale="${disc_scale} ${disc_scale} ${disc_scale}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="-0.3 -0.3 0"/>
+        <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://pouco2000_gazebo/meshes/disc/disc.STL" scale="${disc_scale} ${disc_scale} ${disc_scale}"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1"/>
+    </link> 
+
+    <transmission name="disc_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <actuator name="disc_motor">
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+        <joint name="disc_joint">
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        </joint>
+    </transmission>
+
+    <joint name="disc_joint" type="continuous">
+        <parent link="disc_base_link"/>
+        <child link="disc_link"/>
+        <axis rpy="0 0 0" xyz="0 0 1"/>
+    </joint>
+
+    <gazebo reference="disc_link">
+            <material>
+              Gazebo/Grey 
+            </material>
+    </gazebo>
+
+
 
     <!-- gazebo plugin -->
 

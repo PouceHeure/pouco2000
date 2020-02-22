@@ -23,6 +23,14 @@
             ns="pouco2000Robot_beacon_rot_controller"/>
 
   <rosparam command="load"
+            file="$(find pouco2000_gazebo)/config/disc_trans.yaml"
+            ns="pouco2000Robot_disc_trans_controller" />
+
+  <rosparam command="load"
+            file="$(find pouco2000_gazebo)/config/disc_rot.yaml"
+            ns="pouco2000Robot_disc_rot_controller"/>
+
+  <rosparam command="load"
             file="$(find pouco2000_gazebo)/config/drive.yaml"
             ns="pouco2000Robot_diff_drive_controller" />
 
@@ -43,6 +51,8 @@
           pouco2000Robot_diff_drive_controller
           pouco2000Robot_beacon_trans_controller
           pouco2000Robot_beacon_rot_controller
+          pouco2000Robot_disc_trans_controller
+          pouco2000Robot_disc_rot_controller
           pouco2000Robot_forks_controller
           pouco2000Robot_headlights_front_controller
           pouco2000Robot_headlights_back_controller

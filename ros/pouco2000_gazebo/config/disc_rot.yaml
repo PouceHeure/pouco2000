@@ -1,0 +1,2 @@
+type: "velocity_controllers/JointVelocityController"
+joint: disc_joint

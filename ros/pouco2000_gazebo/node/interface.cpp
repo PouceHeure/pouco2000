@@ -21,17 +21,20 @@ class HardwareToController{
     ros::Publisher pub_beacon;
     ros::Publisher pub_cmd_vel;
     ros::Publisher pub_fork;
+    ros::Publisher pub_disc;
     ros::Subscriber sub_controller;
 
     bool hlf_is_on = false; 
     bool hlb_is_on = false; 
     bool beacon_is_on = false; 
     bool fork_is_on = false; 
+    bool disc_is_on = false; 
 
     ExtractorButton* hlf_extractor;
     ExtractorButton* hlb_extractor;
     ExtractorButton* beacon_extractor;
     ExtractorButton* fork_extractor;
+    ExtractorButton* disc_extractor;
 
     ExtractorPotentiometerCircle* linear_extractor;
     ExtractorPotentiometerCircle* rot_extractor;
@@ -59,6 +62,11 @@ class HardwareToController{
             fork_is_on = !fork_is_on;
             bool_msg.data = fork_is_on;
             pub_fork.publish(bool_msg);
+        }
+        if(disc_extractor->is_push(msg)){  
+            disc_is_on = !disc_is_on;
+            bool_msg.data = disc_is_on;
+            pub_disc.publish(bool_msg);
         }
 
         float linear_value;
@@ -93,6 +101,7 @@ class HardwareToController{
                          const std::string& topic_hlb,
                          const std::string& topic_beacon,
                          const std::string& topic_fork,
+                         const std::string& topic_disc,
                          const std::string& topic_cmd_vel){
     
     this->pub_hlf = nh.advertise<std_msgs::Bool>(topic_hlf,10);
@@ -100,12 +109,14 @@ class HardwareToController{
     this->pub_beacon = nh.advertise<std_msgs::Bool>(topic_beacon,10);
     this->pub_cmd_vel = nh.advertise<geometry_msgs::Twist>(topic_cmd_vel,10);
     this->pub_fork = nh.advertise<std_msgs::Bool>(topic_fork,10);
+    this->pub_disc = nh.advertise<std_msgs::Bool>(topic_disc,10);
     this->sub_controller = nh.subscribe<pouco2000_ros::Controller>(topic_controller,1000,&HardwareToController::callback,this);
     
     hlf_extractor = new ExtractorButton(0);
     hlb_extractor = new ExtractorButton(1);
     beacon_extractor = new ExtractorButton(2);
     fork_extractor = new ExtractorButton(3);
+    disc_extractor = new ExtractorButton(4);
 
     linear_extractor = new ExtractorPotentiometerCircle(0);
     rot_extractor = new ExtractorPotentiometerCircle(1);
@@ -127,6 +138,7 @@ int main(int argc, char **argv){
                       "/controller/headlight_back",
                       "/controller/fork",
                       "/controller/beacon",
+                      "controller/disc",
                       "/controller/cmdvel"
                       );
   ros::spin();

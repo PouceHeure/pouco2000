@@ -3,7 +3,7 @@
 #define DELAY 50
 
 int switchs_pin_connections[] = {5};
-int buttons_pin_connections[] = {3,4,8,9};
+int buttons_pin_connections[] = {2,3,4,8,9};
 int potentiometer_circle_pin_connections[] = {A5,A7};
 
 //ros variables  

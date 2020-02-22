@@ -184,9 +184,6 @@ const float ControllerBeacon::ROT_VALUE_MIN = 0;
 const float ControllerBeacon::ROT_VALUE_MAX = 10;
 
 
-/* */
-
-
 
 /* controller On/Off to float  */
 
@@ -225,9 +222,9 @@ int main(int argc, char **argv){
   ControllerHeadLightBack controller_headlight_back(nh,"controller/headlight_back","/pouco2000Robot_headlights_back_controller/command");
   ControllerOnOffToFloat controller_fork(nh,"controller/fork","/pouco2000Robot_forks_controller/command");
   ControllerBeacon controller_beacon(nh,"controller/beacon","/pouco2000Robot_beacon_rot_controller/command","/pouco2000Robot_beacon_trans_controller/command");
+  ControllerBeacon controller_disc(nh,"controller/disc","/pouco2000Robot_disc_rot_controller/command","/pouco2000Robot_disc_trans_controller/command");
   ControllerCmdVel controller_cmdvel(nh,"controller/cmdvel","/pouco2000Robot_diff_drive_controller/cmd_vel");
   
-
   ros::spin();
 
   return 0;
