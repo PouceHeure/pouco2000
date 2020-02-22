@@ -34,6 +34,10 @@
     <xacro:property name="fork_rad" value="0.02"/>
     <xacro:property name="fork_base_width" value="0.10"/>
 
+    <xacro:property name="antenna_len" value="0.2"/>
+    <xacro:property name="antenna_rad" value="0.01"/>
+    <xacro:property name="antenna_space" value="0.1"/>
+
     <!-- colors definitions -->
 
     <material name="blue">
@@ -476,10 +480,43 @@
         <origin rpy="0 0 0" xyz="0.2 0 0"/>
     </joint>
 
+    <!-- link: antenna -->
+
+    <link name="antenna_link">
+        <visual>
+            <geometry>
+                <cylinder length="${antenna_len}" radius="${antenna_rad}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${ antenna_len/2}"/>
+        <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="${antenna_len}" radius="${antenna_rad}"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 ${ antenna_len/2}"/>
+        </collision>
+        <xacro:default_inertial mass="0.05"/>
+    </link>
+
+    <gazebo reference="antenna_link">
+            <material>Gazebo/Yellow </material>
+    </gazebo>
+
+    <joint name="antenna_joint" type="fixed">
+        <parent link="level_1_link"/>
+        <child link="antenna_link"/>
+        <origin rpy="0 0 0" xyz="${width/2 - antenna_space} ${height/2  - antenna_space} ${level_depth/2}"/>
+    </joint>
+
+    <!-- gazebo plugin -->
+
+
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
         <robotNamespace>/</robotNamespace>
         </plugin>
     </gazebo>
+
 
 </robot>
