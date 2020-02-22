@@ -8,6 +8,7 @@
       - [Place it](#place-it)
       - [Compile it](#compile-it)
     - [Use package](#use-package)
+      - [Controller msg](#controller-msg)
     - [Documention](#documention)
   - [Arduino Library](#arduino-library)
     - [Setup library](#setup-library)
@@ -25,8 +26,9 @@ The package is generally based on 2 librairies:
 - *pouco2000*, principal library, grouping Controller class definition. 
 - *pouco2000_debug*, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely depend packages.
 
-2 others libaries has been developed. 
-- pouco2000_introspection, grouping methods and classes allowing to filter a data from Controller msg. 
+3 others libaries has been developed. 
+- pouco2000_introspection, filter data from controller msg and publish data 
+- pouco2000_extractor, extract data from controller msg 
 - pouco2000_monitor, grouping methods and classes allowing to create a monitor.
 
 ### Setup package
@@ -57,7 +59,20 @@ USER$ catkin build pouco2000_ros
 
 ### Use package 
 
-(TODO)
+#### Controller msg 
+
+The project is essentially based on a principal msg: pouco2000::Controller
+
+```
+Header header
+Buttons buttons
+SwitchsOnOff switchs_on_off
+SwitchsMode switchs_mode
+Potentiometers potentiometers_circle
+Potentiometers potentiometers_slider
+```
+
+Each part expect header is an array of data. 
 
 ### Documention 
 
