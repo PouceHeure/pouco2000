@@ -56,9 +56,8 @@ namespace math {
 }
 
 /**
- * @brief Create own string object  
- * Create color string and allows to compute the length.
- * The color change the string content so a simple length isn't work. 
+ * @brief Create color string, offering an esay way to compute the length of the content. 
+ * The color change the string content (add some specials chars), so the default length is wrong.  
  */
 class ColorString {
     private:

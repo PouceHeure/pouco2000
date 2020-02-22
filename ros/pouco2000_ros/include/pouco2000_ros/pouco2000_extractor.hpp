@@ -2,7 +2,12 @@
 
 #include<pouco2000_ros/Controller.h>
 
-
+/**
+ * @brief extract data from msg controller 
+ * 
+ * @tparam T_data type of data extract 
+ * @tparam T_msg_field type of field where the data will be extracted 
+ */
 template<typename T_data, typename T_msg_field>
 class Extractor{
     private: 
@@ -10,11 +15,34 @@ class Extractor{
         T_data previous_data;
         
     protected:
+        /**
+         * @brief extract the data of the field from the controller msg  
+         * 
+         * @param msg controller msg 
+         * @return T_msg_field 
+         */
         virtual T_msg_field extract_field(const pouco2000_ros::Controller::ConstPtr& msg)=0;
 
     public: 
         Extractor(int _index);
+        /**
+         * @brief extract the value from msg only if the data has been updated 
+         * 
+         * @param msg controller msg 
+         * @param result result of the extraction 
+         * @return true trig an update  
+         * @return false update hasn't been done  
+         */
         bool extract_only_change(const pouco2000_ros::Controller::ConstPtr& msg, T_data& result);
+
+        /**
+         * @brief extract the value if it's possible to do
+         * 
+         * @param msg controller msg 
+         * @param result result of the extraction 
+         * @return true extraction is possible 
+         * @return false extraction isn't possible 
+         */
         bool extract(const pouco2000_ros::Controller::ConstPtr& msg, T_data& result);
 };
 
@@ -26,6 +54,7 @@ Extractor<T_data,T_msg_field>::Extractor(int _index):index(_index){
 template<typename T_data, typename T_msg_field>
 bool Extractor<T_data,T_msg_field>::extract(const pouco2000_ros::Controller::ConstPtr& msg, T_data& result){
     T_msg_field data_field = extract_field(msg);
+    // check data is available 
     if(data_field.data.size() > index){
         T_data data = data_field.data.at(index); 
         result = data;
@@ -48,47 +77,94 @@ bool Extractor<T_data,T_msg_field>::extract_only_change(const pouco2000_ros::Con
     return false;
 }
 
-
+/**
+ * @brief Extractor for buttons field 
+ * 
+ */
 class ExtractorButton: public Extractor<bool,pouco2000_ros::Buttons>{
     protected:
         pouco2000_ros::Buttons extract_field(const pouco2000_ros::Controller::ConstPtr& msg);
     
     public:
         ExtractorButton(int index);
+
+        /**
+         * @brief check if the button has been pushed or not 
+         * 
+         * @param msg controller msg 
+         * @return true the button has been pushed
+         * @return false the button hasn't been pushed 
+         */
         bool is_push(const pouco2000_ros::Controller::ConstPtr& msg);
-};
+}; 
 
-
-class ExtractorSwitchsOnOff: public Extractor<bool,pouco2000_ros::SwitchsOnOff>{
+/**
+ * @brief Extractor for switchs_on_off field
+ * 
+ */
+class ExtractorSwitchOnOff: public Extractor<bool,pouco2000_ros::SwitchsOnOff>{
     protected:
         pouco2000_ros::SwitchsOnOff extract_field(const pouco2000_ros::Controller::ConstPtr& msg);
     
     public:
-        ExtractorSwitchsOnOff(int index);
+        ExtractorSwitchOnOff(int index);
+
+        /**
+         * @brief check is the switch is on position "on" 
+         * 
+         * @param msg controller msg 
+         * @return true switch on "on"
+         * @return false switch on "off"
+         */
         bool is_on(const pouco2000_ros::Controller::ConstPtr& msg);
 };
 
-class ExtractorSwitchsMode: public Extractor<int,pouco2000_ros::SwitchsMode>{
+
+/**
+ * @brief Extractor for switchs_mode field 
+ * 
+ */
+class ExtractorSwitchMode: public Extractor<int,pouco2000_ros::SwitchsMode>{
     protected:
         pouco2000_ros::SwitchsMode extract_field(const pouco2000_ros::Controller::ConstPtr& msg);
     
     public:
-        ExtractorSwitchsMode(int index);
+        ExtractorSwitchMode(int index);
+
+        /**
+         * @brief check if the switch is on the mode given 
+         * 
+         * @param msg controller msg 
+         * @param mode compare mode 
+         * @return true the switch is on the mode 
+         * @return false the switch isn't on the mode 
+         */
         bool is_mode(const pouco2000_ros::Controller::ConstPtr& msg,const int& mode);
 };
 
-class ExtractorPotentiometersCircle: public Extractor<float,pouco2000_ros::Potentiometers>{
+
+
+/**
+ * @brief Extractor for potentiometers_circle field 
+ * 
+ */
+class ExtractorPotentiometerCircle: public Extractor<float,pouco2000_ros::Potentiometers>{
     protected:
         pouco2000_ros::Potentiometers extract_field(const pouco2000_ros::Controller::ConstPtr& msg);
     
     public:
-        ExtractorPotentiometersCircle(int index);
+        ExtractorPotentiometerCircle(int index);
 };
 
-class ExtractorPotentiometersSlider: public Extractor<float,pouco2000_ros::Potentiometers>{
+
+/**
+ * @brief Extracor for potentiometers_slider field
+ * 
+ */
+class ExtractorPotentiometerSlider: public Extractor<float,pouco2000_ros::Potentiometers>{
     protected:
         pouco2000_ros::Potentiometers extract_field(const pouco2000_ros::Controller::ConstPtr& msg);
     
     public:
-        ExtractorPotentiometersSlider(int index);
+        ExtractorPotentiometerSlider(int index);
 };
