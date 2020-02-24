@@ -56,12 +56,15 @@ add_library(${PROJECT_NAME}_monitor
 ## Nodes release
 
 add_executable(controller_node node/release/controller.cpp)
+add_dependencies(controller_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(controller_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
 add_executable(filter_node node/release/filter.cpp)
+add_dependencies(filter_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(filter_node ${catkin_LIBRARIES} ${PROJECT_NAME}_introspection)
 
 add_executable(monitor_node node/release/monitor.cpp)
+add_dependencies(monitor_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(monitor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_monitor)
 
 ## Nodes debug
