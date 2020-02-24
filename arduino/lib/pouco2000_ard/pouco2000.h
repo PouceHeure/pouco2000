@@ -2,10 +2,10 @@
 //ros lib 
 #include <ros.h>
 //msg lib 
-#include <pouco2000_ros/SwitchsMode.h>
-#include <pouco2000_ros/SwitchsOnOff.h>
-#include <pouco2000_ros/Buttons.h>
-#include <pouco2000_ros/Potentiometers.h>
+#include <pouco2000_ros_msgs/SwitchsMode.h>
+#include <pouco2000_ros_msgs/SwitchsOnOff.h>
+#include <pouco2000_ros_msgs/Buttons.h>
+#include <pouco2000_ros_msgs/Potentiometers.h>
 
 /* struct fields */
 
@@ -138,22 +138,22 @@ void Handle<T_field,T_data,T_msg>::update(){
  * @brief Handle used by Switchs On Off type
  * 
  */
-typedef Handle<Switch,pouco2000_ros::SwitchsOnOff::_data_type,pouco2000_ros::SwitchsOnOff> HandleSwitchsOnOff;
+typedef Handle<Switch,pouco2000_ros_msgs::SwitchsOnOff::_data_type,pouco2000_ros_msgs::SwitchsOnOff> HandleSwitchsOnOff;
 
 /**
  * @brief Handle used by Switchs Mode type
  * 
  */
-typedef Handle<SwitchMode,pouco2000_ros::SwitchsMode::_data_type,pouco2000_ros::SwitchsMode> HandleSwitchsMode;
+typedef Handle<SwitchMode,pouco2000_ros_msgs::SwitchsMode::_data_type,pouco2000_ros_msgs::SwitchsMode> HandleSwitchsMode;
 
 /**
  * @brief Handle used by Buttons 
  * 
  */
-typedef Handle<Button,pouco2000_ros::Buttons::_data_type,pouco2000_ros::Buttons> HandleButtons;
+typedef Handle<Button,pouco2000_ros_msgs::Buttons::_data_type,pouco2000_ros_msgs::Buttons> HandleButtons;
 
 /**
  * @brief Handle used by Potentiometers (circle or slider)
  * 
  */
-typedef Handle<Potentiometer,pouco2000_ros::Potentiometers::_data_type,pouco2000_ros::Potentiometers> HandlePotentiometers;
+typedef Handle<Potentiometer,pouco2000_ros_msgs::Potentiometers::_data_type,pouco2000_ros_msgs::Potentiometers> HandlePotentiometers;
