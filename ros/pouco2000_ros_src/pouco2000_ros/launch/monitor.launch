@@ -1,0 +1,7 @@
+<launch>
+    <!-- <include file="$(find pouco2000_ros)/launch/debug.launch"/> -->
+    <!-- ns_debug namespace avoid conflict with the real controller -->
+    <group ns="ns_release">
+        <node pkg="pouco2000_ros" type="monitor_node" name="debug_fake_monitor_node" output="screen"/>
+    </group>
+</launch>
