@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   #LIBRARIES ${PROJECT_NAME}_extractor
-  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs pouco2000_ros_msgs
 #  DEPENDS system_lib
 )  
   
@@ -41,17 +41,25 @@ add_library(${PROJECT_NAME}
   src/pouco2000.cpp
 )
 
+add_dependencies(${PROJECT_NAME} pouco2000_ros_msgs_generate_messages_cpp)
+
 add_library(${PROJECT_NAME}_debug
   src/pouco2000_debug.cpp
 )
+
+add_dependencies(${PROJECT_NAME}_debug pouco2000_ros_msgs_generate_messages_cpp)
 
 add_library(${PROJECT_NAME}_introspection
   src/pouco2000_introspection.cpp
 )
 
+add_dependencies(${PROJECT_NAME}_introspection pouco2000_ros_msgs_generate_messages_cpp)
+
 add_library(${PROJECT_NAME}_monitor
   src/pouco2000_monitor.cpp
 )
+
+add_dependencies(${PROJECT_NAME}_monitor pouco2000_ros_msgs_generate_messages_cpp)
 
 ## Nodes release
 

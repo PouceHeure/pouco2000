@@ -24,5 +24,6 @@ include_directories(
 )
 
 add_executable(popup_node node/popup.cpp)
-add_dependencies(popup_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(popup_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
 target_link_libraries(popup_node ${catkin_LIBRARIES})
+

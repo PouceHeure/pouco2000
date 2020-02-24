@@ -42,9 +42,10 @@ include_directories(
 )
 
 add_executable(interface_node node/interface.cpp)
-add_dependencies(interface_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(interface_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
 target_link_libraries(interface_node ${catkin_LIBRARIES})
 
 add_executable(controller_gazebo_node node/controller.cpp)
-add_dependencies(controller_gazebo_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(controller_gazebo_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
 target_link_libraries(controller_gazebo_node ${catkin_LIBRARIES})
+
