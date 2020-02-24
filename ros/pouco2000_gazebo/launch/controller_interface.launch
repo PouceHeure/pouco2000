@@ -1,0 +1,4 @@
+<launch>
+    <node name="interface_node" pkg="pouco2000_gazebo" type="interface_node" />
+    <node name="controller_node" pkg="pouco2000_gazebo" type="controller_node" />
+</launch>
