@@ -2,7 +2,10 @@
 
 :warning: in development 
 
+## Table Of Contents
+
 - [Pouco2000](#pouco2000)
+  - [Table Of Contents](#table-of-contents)
   - [ROS Packages](#ros-packages)
     - [Architecture](#architecture)
       - [pkg: pouco2000_ros](#pkg-pouco2000ros)
@@ -10,9 +13,10 @@
     - [Setup packages](#setup-packages)
       - [Place its](#place-its)
       - [Compile its](#compile-its)
-    - [Use package](#use-package)
+    - [Use packages](#use-packages)
+      - [Start controller](#start-controller)
       - [Controller msg](#controller-msg)
-    - [pouco2000_extracor lib](#pouco2000extracor-lib)
+      - [pouco2000_extracor lib](#pouco2000extracor-lib)
     - [Documention](#documention)
   - [Arduino Library](#arduino-library)
     - [Setup library](#setup-library)
@@ -44,7 +48,7 @@ The package is generally based on 2 librairies:
 - *pouco2000*, principal library, grouping Controller class definition. 
 - *pouco2000_debug*, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely dependent packages.
 
-2 others libaries has been developed. 
+2 others libaries have been developed. 
 - pouco2000_introspection, filter data from controller msg and publish data 
 - pouco2000_monitor, grouping methods and classes allowing to create a monitor.
 
@@ -78,7 +82,15 @@ or
 USER$ catkin build 
 ```
 
-### Use package 
+### Use packages
+
+> The controller_node publishes the current state of the table. If you want to get the current state you need to create a subscriber to this topic. By default this topic is: *controller*
+
+#### Start controller 
+
+Please update the launch *release* inside pouco2000_ros package (verify serial port used).
+
+> roslaunch pouco2000_ros release.launch
 
 #### Controller msg 
 
@@ -106,7 +118,7 @@ Potentiometers [float32,float32,...]
 Potentiometers [float32,float32,...]
 ```
 
-### pouco2000_extracor lib 
+#### pouco2000_extracor lib 
 
 The package pouco2000_tools includes pouco2000_extractor. This library provides class and methods allowing to extract data easily from controller msg. 
 
@@ -137,18 +149,22 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 
 ```
 
-| Field               | Class                        | Methods |
-|---------------------|------------------------------|---------|
-| Buttons             | ExtractorButton              | is_push |
-| SwitchOnOff         | ExtractorSwitchOnOff         | is_on   |
-| SwitchMode          | ExtractorSwitchMode          | is_mode |
-| PotentiometerCircle | ExtractorPotentiometerCircle | None    |
-| PotentiometerSlider | ExtractorPotentiometerSlider | None    |
+| Field               | Class                        | Additional Method | Goal                                           |
+| ------------------- | ---------------------------- | ----------------- | ---------------------------------------------- |
+| Buttons             | ExtractorButton              | is_push           | return bool if the button is puhed             |
+| SwitchOnOff         | ExtractorSwitchOnOff         | is_on             | return bool if the switch is on                |
+| SwitchMode          | ExtractorSwitchMode          | is_mode           | return bool if the switch is on the mode given |
+| PotentiometerCircle | ExtractorPotentiometerCircle | None              | None                                           |
+| PotentiometerSlider | ExtractorPotentiometerSlider | None              | None                                           |
 
 
 > Show example *demo_02_extractor* inside *pouco2000_demo* package. 
 
 > Show the documentation inside the *pouco2000_demo_tools* package.
+
+
+:exclamation: If you want use this library inside your package, your package need to depend of:
+*pouco2000_ros_tools*
 
 
 ### Documention 
