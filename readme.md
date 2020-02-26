@@ -2,6 +2,9 @@
 
 :warning: in development 
 
+**Goal:**
+Often during a development, a robot depend on a lot of parameters. Debug a robot with a lot of parameters may be not user friendly because we are limited by using only one mouse and one keyboard. This solution allows to debug your robot easily in using your two hands. The project can be implemented on any ros robot.
+
 - [Pouco2000](#pouco2000)
   - [ROS Packages](#ros-packages)
     - [Architecture](#architecture)
@@ -34,6 +37,7 @@ ROS packages are splitted into 2 meta-packages:
 - *pouco2000_examples*: set of packages explaining how to use the project 
   - pouco2000_popup
   - pouco2000_gazebo
+  - pouco2000_demo 
 
 #### pkg: pouco2000_ros
 
@@ -143,6 +147,11 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 | SwitchMode          | ExtractorSwitchMode          | is_mode |
 | PotentiometerCircle | ExtractorPotentiometerCircle | None    |
 | PotentiometerSlider | ExtractorPotentiometerSlider | None    |
+
+
+> Show example *demo_02_extractor* inside *pouco2000_demo* package. 
+
+> Show the documentation inside the *pouco2000_demo_tools* package.
 
 
 ### Documention 
