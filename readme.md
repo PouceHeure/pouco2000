@@ -1,32 +1,31 @@
-# Pouco2000
+# Pouco2000  <!-- omit in toc --> 
 
 :warning: in development 
 
-## Table Of Contents
+## Table Of Contents  <!-- omit in toc --> 
 
-- [Pouco2000](#pouco2000)
-  - [Table Of Contents](#table-of-contents)
-  - [ROS Packages](#ros-packages)
-    - [Architecture](#architecture)
-      - [pkg: pouco2000_ros](#pkg-pouco2000ros)
-      - [pkg: pouco2000_ros_tools](#pkg-pouco2000rostools)
-    - [Setup packages](#setup-packages)
-      - [Place its](#place-its)
-      - [Compile its](#compile-its)
-    - [Use packages](#use-packages)
-      - [Start controller](#start-controller)
-      - [Controller msg](#controller-msg)
-      - [pouco2000_extracor lib](#pouco2000extracor-lib)
-    - [Documention](#documention)
-  - [Arduino Library](#arduino-library)
-    - [Setup library](#setup-library)
-      - [Place it](#place-it)
-      - [Place ros_lib](#place-roslib)
-    - [Use library](#use-library)
-    - [Warning](#warning)
-  - [Modelization](#modelization)
-  - [Examples](#examples)
- 
+
+- [ROS Packages](#ros-packages)
+  - [Architecture](#architecture)
+    - [pkg: pouco2000_ros](#pkg-pouco2000ros)
+    - [pkg: pouco2000_ros_tools](#pkg-pouco2000rostools)
+  - [Setup packages](#setup-packages)
+    - [Place its](#place-its)
+    - [Compile its](#compile-its)
+  - [Use packages](#use-packages)
+    - [Start controller](#start-controller)
+    - [Controller msg](#controller-msg)
+    - [pouco2000_extracor lib](#pouco2000extracor-lib)
+  - [Documention](#documention)
+- [Arduino Library](#arduino-library)
+  - [Setup library](#setup-library)
+    - [Place it](#place-it)
+    - [Place ros_lib](#place-roslib)
+  - [Use library](#use-library)
+  - [Warning](#warning)
+- [Modelization](#modelization)
+- [Examples](#examples)
+   
 ## ROS Packages
 
 ### Architecture  
