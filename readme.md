@@ -13,9 +13,9 @@
     - [Place its](#place-its)
     - [Compile its](#compile-its)
   - [Use packages](#use-packages)
-    - [Start controller](#start-controller)
-    - [Controller msg](#controller-msg)
-    - [pouco2000_extracor lib](#pouco2000extracor-lib)
+    - [Start the controller](#start-the-controller)
+    - [msg:Controller](#msgcontroller)
+    - [lib: pouco2000_extractor](#lib-pouco2000extractor)
   - [Documention](#documention)
 - [Arduino Library](#arduino-library)
   - [Setup library](#setup-library)
@@ -85,13 +85,13 @@ USER$ catkin build
 
 > The controller_node publishes the current state of the table. If you want to get the current state you need to create a subscriber to this topic. By default this topic is: *controller*
 
-#### Start controller 
+#### Start the controller 
 
 Please update the launch *release* inside pouco2000_ros package (verify serial port used).
 
 > roslaunch pouco2000_ros release.launch
 
-#### Controller msg 
+#### msg:Controller 
 
 The project is essentially based on a principal msg: *pouco2000::Controller*
 
@@ -117,7 +117,7 @@ Potentiometers [float32,float32,...]
 Potentiometers [float32,float32,...]
 ```
 
-#### pouco2000_extracor lib 
+#### lib: pouco2000_extractor  
 
 The package pouco2000_tools includes pouco2000_extractor. This library provides class and methods allowing to extract data easily from controller msg. 
 
