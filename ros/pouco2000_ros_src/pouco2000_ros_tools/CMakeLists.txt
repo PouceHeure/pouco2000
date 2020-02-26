@@ -38,11 +38,6 @@ add_library(${PROJECT_NAME}_extractor
 
 add_dependencies(${PROJECT_NAME}_extractor pouco2000_ros_msgs_generate_messages_cpp)
 
-add_executable(extractor_node node/extractor.cpp)
-add_dependencies(extractor_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
-target_link_libraries(extractor_node ${catkin_LIBRARIES} ${PROJECT_NAME}_extractor)
-
-
 ## Generate package documentation with rosdoc_lite
 execute_process(COMMAND rospack find ${PROJECT_NAME} 
                 OUTPUT_VARIABLE PROJECT_DIR  
