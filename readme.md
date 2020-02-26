@@ -2,9 +2,6 @@
 
 :warning: in development 
 
-**Goal:**
-Often during a development, a robot depend on a lot of parameters. Debug a robot with a lot of parameters may be not user friendly because we are limited by using only one mouse and one keyboard. This solution allows to debug your robot easily in using your two hands. The project can be implemented on any ros robot.
-
 - [Pouco2000](#pouco2000)
   - [ROS Packages](#ros-packages)
     - [Architecture](#architecture)
