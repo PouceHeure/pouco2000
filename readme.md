@@ -3,65 +3,85 @@
 :warning: in development 
 
 - [Pouco2000](#pouco2000)
-  - [ROS Package](#ros-package)
-    - [Setup package](#setup-package)
-      - [Place it](#place-it)
-      - [Compile it](#compile-it)
+  - [ROS Packages](#ros-packages)
+    - [Architecture](#architecture)
+      - [pkg: pouco2000_ros](#pkg-pouco2000ros)
+      - [pkg: pouco2000_ros_tools](#pkg-pouco2000rostools)
+    - [Setup packages](#setup-packages)
+      - [Place its](#place-its)
+      - [Compile its](#compile-its)
     - [Use package](#use-package)
       - [Controller msg](#controller-msg)
+    - [pouco2000_extracor lib](#pouco2000extracor-lib)
     - [Documention](#documention)
   - [Arduino Library](#arduino-library)
     - [Setup library](#setup-library)
-      - [Place it](#place-it-1)
+      - [Place it](#place-it)
       - [Place ros_lib](#place-roslib)
     - [Use library](#use-library)
     - [Warning](#warning)
   - [Modelization](#modelization)
   - [Examples](#examples)
  
-## ROS Package 
-A project ros has been developped, called *pouco2000_ros*, this package receives data from electronic part, and regroups these message into one msg. 
+## ROS Packages
+
+### Architecture  
+ROS packages are splitted into 2 meta-packages: 
+- *pouco2000_src*: set of packages driving the controller
+  - pouco2000_ros
+  - pouco2000_msgs
+  - pouco2000_tools
+- *pouco2000_examples*: set of packages explaining how to use the project 
+  - pouco2000_popup
+  - pouco2000_gazebo
+
+#### pkg: pouco2000_ros
+
+the principale package is *pouco2000_ros*, this package receives data from electronic part, and regroups these messages into one msg. 
 
 The package is generally based on 2 librairies:
 - *pouco2000*, principal library, grouping Controller class definition. 
-- *pouco2000_debug*, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely depend packages.
+- *pouco2000_debug*, allowing to develope easily the ros part. I decided to let this part in the release version, allowing to user to develope efficacely dependent packages.
 
-3 others libaries has been developed. 
+2 others libaries has been developed. 
 - pouco2000_introspection, filter data from controller msg and publish data 
-- pouco2000_extractor, extract data from controller msg 
 - pouco2000_monitor, grouping methods and classes allowing to create a monitor.
 
-### Setup package
+#### pkg: pouco2000_ros_tools
 
-#### Place it 
+This package exposes a cpp library, easily the developement of nodes using this project. 
 
-The *pouco2000_ros* need to be placed inside your ros working space. It's possible to create a symbolic link inside your ros ws. 
+### Setup packages
+
+#### Place its 
+
+ROS packages need to placed inside your ROS workspace. It's possible to place its, by a symbolic link. 
 
 ``` shell
-USER$ ln -s {package/path} {ros_ws/path}
+USER$ ln -s {this/ros/folder/path} {ros_ws/path}
 ```
 
-(It's also possible to copy and paste the package)
+(It's also possible to copy and paste the folder inside your workspace)
 
-#### Compile it
+#### Compile its
 
 Once moved or linked, the package need to be compiled. It's possbile to use catkin_make or catkin build. 
 
 ```shell
 ** go inside in your working space (at the root level) **
-USER$ catkin_make pouco2000_ros
+USER$ catkin_make 
 ```
 or 
 ```shell
 ** go inside in your working space (at any level) **
-USER$ catkin build pouco2000_ros
+USER$ catkin build 
 ```
 
 ### Use package 
 
 #### Controller msg 
 
-The project is essentially based on a principal msg: pouco2000::Controller
+The project is essentially based on a principal msg: *pouco2000::Controller*
 
 ```
 Header header
@@ -73,6 +93,57 @@ Potentiometers potentiometers_slider
 ```
 
 Each part expect header is an array of data. 
+
+The message can be see like this: 
+
+```
+Header header
+Buttons [bool,bool,...]
+SwitchsOnOff [bool,bool,...]
+SwitchsMode [uint8,uint8,...]
+Potentiometers [float32,float32,...]
+Potentiometers [float32,float32,...]
+```
+
+### pouco2000_extracor lib 
+
+The package pouco2000_tools includes pouco2000_extractor. This library provides class and methods allowing to extract data easily from controller msg. 
+
+For each field a class has been developed. For each extractor a position in the field array need to be given. 
+
+Each extractor owns no less than 2 methods: 
+
+```c++
+/**
+* @brief extract the value from msg only if the data has been updated 
+* 
+* @param msg controller msg 
+* @param result result of the extraction 
+* @return true trig an update  
+* @return false update hasn't been done  
+*/
+bool extract_only_change(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result);
+
+/**
+* @brief extract the value if it's possible to do
+* 
+* @param msg controller msg 
+* @param result result of the extraction 
+* @return true extraction is possible 
+* @return false extraction isn't possible 
+*/
+bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result);
+
+```
+
+| Field               | Class                        | Methods |
+|---------------------|------------------------------|---------|
+| Buttons             | ExtractorButton              | is_push |
+| SwitchOnOff         | ExtractorSwitchOnOff         | is_on   |
+| SwitchMode          | ExtractorSwitchMode          | is_mode |
+| PotentiometerCircle | ExtractorPotentiometerCircle | None    |
+| PotentiometerSlider | ExtractorPotentiometerSlider | None    |
+
 
 ### Documention 
 
@@ -162,7 +233,7 @@ So, for each field you need:
 3. inside loop method: 
    1. call the update method of the handle 
 
-> Some examples has beed developed and added to the librarie. Theses examples can be loaded from the arduino IDE (file -> Examples -> pouco2000_ard). 
+> Some examples has been developed and added to the librarie. Theses examples can be loaded from the arduino IDE (file -> Examples -> pouco2000_ard). 
 
 ### Warning 
 The library has been developed and tested on the following boards: 
