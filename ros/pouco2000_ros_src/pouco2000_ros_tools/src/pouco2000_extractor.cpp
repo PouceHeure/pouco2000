@@ -63,5 +63,5 @@ ExtractorPotentiometerSlider::ExtractorPotentiometerSlider(int index):Extractor<
 }
 
 pouco2000_ros_msgs::Potentiometers ExtractorPotentiometerSlider::extract_field(const pouco2000_ros_msgs::Controller::ConstPtr& msg){
-    return msg->potentiometers_circle;
+    return msg->potentiometers_slider;
 }
