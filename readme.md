@@ -2,6 +2,8 @@
 
 :warning: in development 
 
+related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/commit/2a0978fc0e16d941215a3b3b50db7ed5f9754e0e)
+
 ## Table Of Contents  <!-- omit in toc --> 
 
 
@@ -150,7 +152,7 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 
 | Field               | Class                        | Additional Method | Goal                                           |
 | ------------------- | ---------------------------- | ----------------- | ---------------------------------------------- |
-| Buttons             | ExtractorButton              | is_push           | return bool if the button is puhed             |
+| Buttons             | ExtractorButton              | is_push           | return bool if the button is pushed            |
 | SwitchOnOff         | ExtractorSwitchOnOff         | is_on             | return bool if the switch is on                |
 | SwitchMode          | ExtractorSwitchMode          | is_mode           | return bool if the switch is on the mode given |
 | PotentiometerCircle | ExtractorPotentiometerCircle | None              | None                                           |
@@ -260,6 +262,8 @@ So, for each field you need:
 The library has been developed and tested on the following boards: 
 - arduino UNO
 - arduino nano 
+
+It's possible to use several micro-controller, but all elements of a field neet to be on the same card.   
 
 ## Modelization 
 
