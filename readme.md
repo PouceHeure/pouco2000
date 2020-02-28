@@ -30,7 +30,12 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/commit/2a0978f
    
 ## ROS Packages
 
-### Architecture  
+### Architecture
+
+Diagram explaining the principal workflow. 
+![ALT TEXT](.doc/graph/output/pouco2000_general_concept.png)
+
+
 ROS packages are splitted into 2 meta-packages: 
 - *pouco2000_src*: set of packages driving the controller
   - pouco2000_ros
