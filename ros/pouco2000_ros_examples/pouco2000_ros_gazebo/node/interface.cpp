@@ -36,7 +36,7 @@ class HardwareToController{
     ExtractorButton* fork_extractor;
     ExtractorButton* disc_extractor;
 
-    ExtractorPotentiometerCircle* linear_extractor;
+    ExtractorPotentiometerSlider* linear_extractor;
     ExtractorPotentiometerCircle* rot_extractor;
 
     ExtractorSwitchOnOff* back_extractor;
@@ -118,7 +118,7 @@ class HardwareToController{
     fork_extractor = new ExtractorButton(3);
     disc_extractor = new ExtractorButton(4);
 
-    linear_extractor = new ExtractorPotentiometerCircle(0);
+    linear_extractor = new ExtractorPotentiometerSlider(0);
     rot_extractor = new ExtractorPotentiometerCircle(1);
 
     back_extractor = new ExtractorSwitchOnOff(0);
