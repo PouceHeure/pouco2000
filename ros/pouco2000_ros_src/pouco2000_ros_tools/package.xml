@@ -14,9 +14,10 @@
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
   <license>TODO</license>
-
-
+  
+  <test_depend>gtest</test_depend>
   <doc_depend>doxygen</doc_depend>
+
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>pouco2000_ros_msgs</build_depend>
   <build_depend>roscpp</build_depend>

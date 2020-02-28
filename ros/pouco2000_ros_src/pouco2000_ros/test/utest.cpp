@@ -18,16 +18,16 @@ TEST(TestPouco2000Lib, testConvertisser)
  */
 TEST(TestPouco2000Lib, testConvertisserMsg)
 {
-    pouco2000_ros::Potentiometers msg_pots;
+    pouco2000_ros_msgs::Potentiometers msg_pots;
     msg_pots.data.push_back(2);
     msg_pots.data.push_back(10);
     msg_pots.data.push_back(6);
-    pouco2000_ros::Potentiometers msg_expected;
+    pouco2000_ros_msgs::Potentiometers msg_expected;
     msg_expected.data.push_back(0);
     msg_expected.data.push_back(100);
     msg_expected.data.push_back(50);
     ConvertisserPotentiometerToPercent c(2,10);
-    pouco2000_ros::Potentiometers msg_computed = convert_potentiometers(c,msg_pots);
+    pouco2000_ros_msgs::Potentiometers msg_computed = convert_potentiometers(c,msg_pots);
     EXPECT_EQ(msg_expected.data,msg_computed.data);
 }
 
@@ -39,13 +39,13 @@ TEST(TestPouco2000Lib, testWrapper)
 { 
     Controller c;
     c.set_send_mode(SendMode::freq);
-    boost::function<void(const pouco2000_ros::Buttons::ConstPtr&,pouco2000_ros::Controller& current_msg)> buttons_callback;
+    boost::function<void(const pouco2000_ros_msgs::Buttons::ConstPtr&,pouco2000_ros_msgs::Controller& current_msg)> buttons_callback;
     buttons_callback = callback_field::buttons;
     auto wrapper_callback = c.wrapper(buttons_callback);
-    pouco2000_ros::Buttons fake_msg;
+    pouco2000_ros_msgs::Buttons fake_msg;
     fake_msg.data.push_back(true);
     fake_msg.data.push_back(false);
-    pouco2000_ros::ButtonsConstPtr fake_msg_ptr(new pouco2000_ros::Buttons(fake_msg));
+    pouco2000_ros_msgs::ButtonsConstPtr fake_msg_ptr(new pouco2000_ros_msgs::Buttons(fake_msg));
     wrapper_callback(fake_msg_ptr);
     EXPECT_EQ(fake_msg.data,c.current_msg.buttons.data);
 }

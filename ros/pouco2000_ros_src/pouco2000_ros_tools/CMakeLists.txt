@@ -59,3 +59,8 @@ install(
   DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
+
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_gtest(utest test/utest.cpp)
+  target_link_libraries(utest ${catkin_LIBRARIES} ${PROJECT_NAME}_extractor)
+endif()
