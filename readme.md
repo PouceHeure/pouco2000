@@ -16,6 +16,7 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/commit/2a0978f
     - [Compile its](#compile-its)
   - [Use packages](#use-packages)
     - [Start the controller](#start-the-controller)
+    - [Start the monitor (Opt)](#start-the-monitor-opt)
     - [msg:Controller](#msgcontroller)
     - [lib: pouco2000_extractor](#lib-pouco2000extractor)
   - [Documention](#documention)
@@ -33,8 +34,8 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/commit/2a0978f
 ### Architecture
 
 Diagram explaining the principal workflow. 
-![ALT TEXT](.doc/graph/output/pouco2000_general_concept.png)
-
+![ALT TEXT](.doc/diagram/output/pouco2000_general_concept.png)
+   
 
 ROS packages are splitted into 2 meta-packages: 
 - *pouco2000_src*: set of packages driving the controller
@@ -96,7 +97,28 @@ USER$ catkin build
 
 Please update the launch *release* inside pouco2000_ros package (verify serial port used).
 
-> roslaunch pouco2000_ros release.launch
+```shell 
+USER$ roslaunch pouco2000_ros release.launch
+```
+
+#### Start the monitor (Opt)  
+
+The monitor displays (in the current shell) the current state of the board seen from ROS.  
+
+The node is start by this way: 
+
+```shell
+USER$ roslaunch pouco2000_ros monitor.launch
+```
+
+(launch the node in the good namespace)
+
+
+or by this way (remapping):
+
+```shell
+USER$ rosrun pouco2000_ros monitor_node controller:=/namespace/controller
+```
 
 #### msg:Controller 
 
@@ -166,12 +188,11 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 
 > Show example *demo_02_extractor* inside *pouco2000_demo* package. 
 
-> Show the documentation inside the *pouco2000_demo_tools* package.
+> Show the documentation inside the *pouco2000_demo_tools* package (once compiled).
 
 
 :exclamation: If you want use this library inside your package, your package need to depend of:
 *pouco2000_ros_tools*
-
 
 ### Documention 
 
@@ -193,7 +214,7 @@ USER$ ln -s {arduino_lib/path} {arduino/path/libraries/}
 
 #### Place ros_lib
 
-The project uses ROSSERIAL package. Once the *pouco2000_ros* has been compiled, the header's msgs need to placed into arduino libraries. 
+The project uses ROSSERIAL package. Once the *pouco2000_ros_msgs* has been compiled, the header's msgs need to placed into arduino libraries. 
 
 The lib_ros generation can be done, by this command: 
 
@@ -265,10 +286,10 @@ So, for each field you need:
 
 ### Warning 
 The library has been developed and tested on the following boards: 
-- arduino UNO
+- arduino uno
 - arduino nano 
 
-It's possible to use several micro-controller, but all elements of a field neet to be on the same card.   
+It's possible to use several microcontrollers, but all elements of a field neet to be driven by the same microcontroller.
 
 ## Modelization 
 
