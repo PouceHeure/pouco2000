@@ -1,6 +1,6 @@
 # Pouco2000  <!-- omit in toc --> 
 
-:warning: in development 
+:warning: in development
 
 related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0e16d941215a3b3b50db7ed5f9754e0e)
 
@@ -138,11 +138,11 @@ The message can be see like this:
 
 ```
 Header header
-Buttons [bool,bool,...]
-SwitchsOnOff [bool,bool,...]
-SwitchsMode [uint8,uint8,...]
-Potentiometers [float32,float32,...]
-Potentiometers [float32,float32,...]
+[bool,bool,...] buttons
+[bool,bool,...] switchs_on_off
+[uint8,uint8,...] switchs_mode
+[float32,float32,...] potentiometers_circle
+[float32,float32,...] potentiometers_slider
 ```
 
 #### lib: pouco2000_extractor  
