@@ -2,10 +2,9 @@
 
 :warning: in development 
 
-related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/commit/2a0978fc0e16d941215a3b3b50db7ed5f9754e0e)
+related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0e16d941215a3b3b50db7ed5f9754e0e)
 
 ## Table Of Contents  <!-- omit in toc --> 
-
 
 - [ROS Packages](#ros-packages)
   - [Architecture](#architecture)
@@ -191,8 +190,8 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 > Show the documentation inside the *pouco2000_demo_tools* package (once compiled).
 
 
-:exclamation: If you want use this library inside your package, your package need to depend of:
-*pouco2000_ros_tools*
+:exclamation: If you want to use this library inside your package, your package need to depend on:
+*pouco2000_ros_tools* (CMakeLists and package.xml)
 
 ### Documention 
 
