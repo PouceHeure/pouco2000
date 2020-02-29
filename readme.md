@@ -27,6 +27,9 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
   - [Warning](#warning)
 - [Modelization](#modelization)
 - [Examples](#examples)
+- [Configurations](#configurations)
+  - [Remote](#remote)
+  - [Local](#local)
    
 ## ROS Packages
 
@@ -293,3 +296,22 @@ It's possible to use several microcontrollers, but all elements of a field neet 
 ## Modelization 
 
 ## Examples  
+
+## Configurations 
+
+Several configurations are possible with Pouco2000: 
+
+### Remote
+
+You can plug all microcontrollers to a raspberry or a computer (ROS SLAVE) and connect this computer to your ROS MASTER. By this way it's possible to communicate with your robot via ethernet (or wifi).
+
+![ALT TEXT](.doc/diagram/output/pouco2000_configuration_slave.png)
+
+
+For more information about ROS slave/master: http://wiki.ros.org/ROS/Tutorials/MultipleMachines
+
+### Local 
+
+An another way, it's to connect directly microcontroller to your computer running the ROS MASTER.  
+
+![ALT TEXT](.doc/diagram/output/pouco2000_configuration_master.png)
