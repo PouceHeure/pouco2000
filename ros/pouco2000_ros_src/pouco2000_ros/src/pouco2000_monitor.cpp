@@ -275,10 +275,34 @@ ColorString ContainerNColumns::draw(){
     }
     return result;
 }
+
+
+bool operator!= (pouco2000_ros_msgs::Controller::ConstPtr const &c1, 
+                pouco2000_ros_msgs::Controller::ConstPtr const& c2){
+    
+    if(c1->buttons.data != c2->buttons.data){
+        return true;
+    }
+    if(c1->switchs_mode.data != c2->switchs_mode.data){
+        return true;
+    }
+    if(c1->switchs_on_off.data != c2->switchs_on_off.data){
+        return true;
+    }
+    if(c1->potentiometers_circle.data != c2->potentiometers_circle.data){
+        return true;
+    }
+    if(c1->potentiometers_slider.data != c2->potentiometers_slider.data){
+        return true;
+    }
+
+    return false;
+}
  
 /* Monitor */
  
-Monitor::Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title):ContainerVertical(),width_cols(width_cols){  
+Monitor::Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title,const bool& auto_refresh)
+:ContainerVertical(),width_cols(width_cols),auto_refresh(auto_refresh){  
     this->sub = nh.subscribe<pouco2000_ros_msgs::Controller>(topic, 1000, &Monitor::callback, this);
 
     TitleLabelView* v_title = new TitleLabelView(title,width_cols,'#');
@@ -290,6 +314,8 @@ Monitor::Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_c
     ch_seq->add_view(view_seq_text);
     ch_seq->add_view(view_seq_value);
 
+    pouco2000_ros_msgs::Controller msg_controller;
+    msg_previous = *(new pouco2000_ros_msgs::Controller::ConstPtr(new pouco2000_ros_msgs::Controller(msg_controller))); 
     this->add_view(ch_seq);
 } 
 
@@ -420,6 +446,7 @@ void Monitor::update_switchs_modes(const pouco2000_ros_msgs::Controller::ConstPt
 } 
 
 void Monitor::callback(const pouco2000_ros_msgs::Controller::ConstPtr& msg){
+    
     if(!msg->buttons.data.empty() && this->views_buttons.empty()){
         init_buttons(msg);
     }
@@ -443,7 +470,10 @@ void Monitor::callback(const pouco2000_ros_msgs::Controller::ConstPtr& msg){
     update_switchs_onoff(msg);
     update_potentiometers_slider(msg);
     update_potentiometers_circle(msg);
-    
-    screen::clear();
-    screen::print(draw().getContent());
+
+    if(auto_refresh || msg != msg_previous){
+        screen::clear();
+        screen::print(draw().getContent());
+    }
+    msg_previous = msg;
 }

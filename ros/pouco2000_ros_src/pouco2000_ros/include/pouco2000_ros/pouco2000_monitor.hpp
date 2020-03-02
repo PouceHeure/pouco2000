@@ -274,18 +274,23 @@ class ContainerNColumns: public Container {
 };
 
 
+
+bool operator!=(pouco2000_ros_msgs::Controller::ConstPtr const &c1, pouco2000_ros_msgs::Controller::ConstPtr const& c2);
+
+
 /**
  * @brief Handles reception of controller msg, creates views and updates views.   
  * 
  */
 class Monitor: public ContainerVertical {
     private: 
-        unsigned short& width_cols;
 
+        pouco2000_ros_msgs::Controller::ConstPtr  msg_previous;
+        const bool& auto_refresh;
+        unsigned short& width_cols;
         ros::Subscriber sub;
 
         LabelView* view_seq_value;
-
         std::vector<SwitchView<bool>*> views_buttons;
         std::vector<SwitchView<bool>*> views_switchs_onoff;
         std::vector<SwitchView<int>*> views_switchs_mode;
@@ -317,7 +322,7 @@ class Monitor: public ContainerVertical {
 
 
     public: 
-        Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title);
+        Monitor(ros::NodeHandle& nh, std::string topic, unsigned short& width_cols, std::string title,const bool& auto_refresh);
    
         
 };
