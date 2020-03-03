@@ -9,7 +9,7 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
 - [ROS Packages](#ros-packages)
   - [Architecture](#architecture)
     - [pkg: pouco2000_ros](#pkg-pouco2000ros)
-    - [nodes:](#nodes)
+      - [nodes](#nodes)
     - [pkg: pouco2000_ros_tools](#pkg-pouco2000rostools)
   - [Setup packages](#setup-packages)
     - [Place its](#place-its)
@@ -62,7 +62,7 @@ The package is generally based on 2 librairies:
 - pouco2000_introspection, filter data from controller msg and publish data 
 - pouco2000_monitor, grouping methods and classes allowing to create a monitor.
 
-#### nodes: 
+##### nodes 
 - controller_node: 
   - brief: subscribe topics from micocontrollers and publish own message with all data
   - parameters:
