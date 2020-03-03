@@ -9,6 +9,7 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
 - [ROS Packages](#ros-packages)
   - [Architecture](#architecture)
     - [pkg: pouco2000_ros](#pkg-pouco2000ros)
+    - [nodes:](#nodes)
     - [pkg: pouco2000_ros_tools](#pkg-pouco2000rostools)
   - [Setup packages](#setup-packages)
     - [Place its](#place-its)
@@ -24,9 +25,9 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
     - [Place it](#place-it)
     - [Place ros_lib](#place-roslib)
   - [Use library](#use-library)
+    - [Principal concepts](#principal-concepts)
+    - [Examples](#examples)
   - [Warning](#warning)
-- [Modelization](#modelization)
-- [Examples](#examples)
 - [Configurations](#configurations)
   - [Remote](#remote)
   - [Local](#local)
@@ -60,6 +61,17 @@ The package is generally based on 2 librairies:
 2 others libaries have been developed. 
 - pouco2000_introspection, filter data from controller msg and publish data 
 - pouco2000_monitor, grouping methods and classes allowing to create a monitor.
+
+#### nodes: 
+- controller_node: 
+  - brief: subscribe topics from micocontrollers and publish own message with all data
+  - parameters:
+    - (private) rate: the pubication rate. By default the controller_node publish a message once a new data from microntroller has been received
+- monitor_node: 
+  - brief: display the content send by the controller_node
+  - parameters: 
+    - (private) rate: the spin rate. By default the rate is 10Hz
+    - (private) auto_refresh: if false the viewer is refreshed only a new different msg.  
 
 #### pkg: pouco2000_ros_tools
 
@@ -228,6 +240,8 @@ For more information about this package: [http://wiki.ros.org/rosserial](http://
 
 ### Use library  
 
+#### Principal concepts 
+
 For each field (buttons, switchs on off...), a handle object need to be created.  
 
 ```C++
@@ -284,6 +298,8 @@ So, for each field you need:
 3. inside loop method: 
    1. call the update method of the handle 
 
+#### Examples
+
 > Some examples has been developed and added to the librarie. Theses examples can be loaded from the arduino IDE (file -> Examples -> pouco2000_ard). 
 
 ### Warning 
@@ -292,10 +308,6 @@ The library has been developed and tested on the following boards:
 - arduino nano 
 
 It's possible to use several microcontrollers, but all elements of a field neet to be driven by the same microcontroller.
-
-## Modelization 
-
-## Examples  
 
 ## Configurations 
 
