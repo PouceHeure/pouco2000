@@ -37,7 +37,7 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
 ### Architecture
 
 Diagram explaining the principal workflow. 
-![ALT TEXT](.doc/diagram/output/pouco2000_general_concept.png)
+![GENERAL WORKFLOW DIAGRAM](.doc/diagram/output/pouco2000_general_concept.png)
    
 
 ROS packages are splitted into 2 meta-packages: 
@@ -317,7 +317,7 @@ Several configurations are possible with Pouco2000:
 
 You can plug all microcontrollers to a raspberry or a computer (ROS SLAVE) and connect this computer to your ROS MASTER. By this way it's possible to communicate with your robot via ethernet (or wifi).
 
-![ALT TEXT](.doc/diagram/output/pouco2000_configuration_slave.png)
+![CONFIGURATION REMOTE DIAGRAM](.doc/diagram/output/pouco2000_configuration_slave.png)
 
 
 For more information about ROS slave/master: http://wiki.ros.org/ROS/Tutorials/MultipleMachines
@@ -326,4 +326,4 @@ For more information about ROS slave/master: http://wiki.ros.org/ROS/Tutorials/M
 
 An another way, it's to connect directly microcontroller to your computer running the ROS MASTER.  
 
-![ALT TEXT](.doc/diagram/output/pouco2000_configuration_master.png)
+![CONFIGURATION LOCAL DIAGRAM](.doc/diagram/output/pouco2000_configuration_master.png)
