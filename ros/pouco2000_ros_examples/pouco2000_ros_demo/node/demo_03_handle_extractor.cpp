@@ -15,7 +15,7 @@
 class DemoExtractor{
   private: 
     // extractors  
-    HandleExtractor* handle_extractor;
+    HandleExtractors* handle_extractor;
     // sub
     ros::Subscriber sub;
 
@@ -28,29 +28,41 @@ class DemoExtractor{
         ROS_INFO("button 3 pushed");
       }
 
-      if(handle_extractor->get_switchs_onoff(3)->is_on(msg)){
-        ROS_INFO("switchs 3 is on");
+      if(handle_extractor->get_switchs_modes(3)->is_mode(msg,0)){
+        ROS_INFO("switch_modes 3 is on mode 0");
       }
+
+      if(handle_extractor->get_switchs_onoff(3)->is_on(msg)){
+        ROS_INFO("switch_on_off 3 is on");
+      }
+
+      float value_circle; 
+      if(handle_extractor->get_potentiometers_circle(3)->extract_only_change(msg,value_circle)){
+        ROS_INFO("potentiometers_circle 3 value: %f",value_circle);
+      }
+
+      float value_slider; 
+      if(handle_extractor->get_potentiometers_slider(3)->extract_only_change(msg,value_slider)){
+        ROS_INFO("potentiometers_slider 3 value: %f",value_slider);
+      }
+
     }
 
   public: 
     DemoExtractor(ros::NodeHandle& nh,const std::string &topic){
       // instanciate extractors 
-      handle_extractor = new HandleExtractor();
+      handle_extractor = new HandleExtractors();
       // instanciate subscriber to controller  
       sub = nh.subscribe(topic,1000,&DemoExtractor::callback,this);
     }
-
 };
-
 
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "demo_handle_extractor_node");
   ros::NodeHandle nh; 
- 
-  DemoExtractor demo_extractor(nh,"controller");
 
+  DemoExtractor demo_extractor(nh,"controller");
   ros::spin();
 
   return 0;

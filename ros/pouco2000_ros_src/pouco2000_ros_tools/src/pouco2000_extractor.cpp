@@ -33,12 +33,13 @@ pouco2000_ros_msgs::SwitchsOnOff ExtractorSwitchOnOff::extract_field(const pouco
 /* switch_modes */
 
 ExtractorSwitchMode::ExtractorSwitchMode(int index):Extractor<int,pouco2000_ros_msgs::SwitchsMode>(index){
-
+    //avoid ignoring extration when mode researched is 0 
+    previous_data = -1;
 }
 
 bool ExtractorSwitchMode::is_mode(const pouco2000_ros_msgs::Controller::ConstPtr& msg, const int& mode){
     int current_mode;
-    return extract_only_change(msg,current_mode) && current_mode == mode;
+    return extract_only_change(msg,current_mode) && (current_mode == mode);
 }
 
 pouco2000_ros_msgs::SwitchsMode ExtractorSwitchMode::extract_field(const pouco2000_ros_msgs::Controller::ConstPtr& msg){
@@ -68,31 +69,31 @@ pouco2000_ros_msgs::Potentiometers ExtractorPotentiometerSlider::extract_field(c
 
 
 
-HandleExtractor::HandleExtractor(){
+HandleExtractors::HandleExtractors(){
 
 }
 
-ExtractorButton* HandleExtractor::get_button(int index){
+ExtractorButton* HandleExtractors::get_button(int index){
     init_element<ExtractorButton>(index,map_extractors_button);
     return map_extractors_button[index];
 }
 
-ExtractorSwitchOnOff* HandleExtractor::get_switchs_onoff(int index){
+ExtractorSwitchOnOff* HandleExtractors::get_switchs_onoff(int index){
     init_element<ExtractorSwitchOnOff>(index,map_extractors_switchs_onoff);
     return map_extractors_switchs_onoff[index];
 }
 
-ExtractorSwitchMode* HandleExtractor::get_switchs_modes(int index){
+ExtractorSwitchMode* HandleExtractors::get_switchs_modes(int index){
     init_element<ExtractorSwitchMode>(index,map_extractors_switchs_modes);
     return map_extractors_switchs_modes[index];
 }
 
-ExtractorPotentiometerCircle* HandleExtractor::get_potentiometers_circle(int index){
+ExtractorPotentiometerCircle* HandleExtractors::get_potentiometers_circle(int index){
     init_element<ExtractorPotentiometerCircle>(index,map_extractors_potentiometers_circle);
     return map_extractors_potentiometers_circle[index];
 }
 
-ExtractorPotentiometerSlider* HandleExtractor::get_potentiometers_slider(int index){
+ExtractorPotentiometerSlider* HandleExtractors::get_potentiometers_slider(int index){
     init_element<ExtractorPotentiometerSlider>(index,map_extractors_potentiometers_slider);
     return map_extractors_potentiometers_slider[index];
 }

@@ -12,9 +12,9 @@ template<typename T_data, typename T_msg_field>
 class Extractor{
     private: 
         int index;
-        T_data previous_data;
         
     protected:
+        T_data previous_data;
         /**
          * @brief extract the data of the field from the controller msg  
          * 
@@ -62,7 +62,6 @@ bool Extractor<T_data,T_msg_field>::extract(const pouco2000_ros_msgs::Controller
     }
     return false;
 }
-
 
 template<typename T_data, typename T_msg_field>
 bool Extractor<T_data,T_msg_field>::extract_only_change(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result){
@@ -175,7 +174,7 @@ class ExtractorPotentiometerSlider: public Extractor<float,pouco2000_ros_msgs::P
  * The allocations of each extractor depend if the extractor need to be called avoiding large useless allocation
  * 
  */
-class HandleExtractor{
+class HandleExtractors{
     private: 
         // extractors map variables 
         std::map<int,ExtractorButton*> map_extractors_button;
@@ -188,7 +187,7 @@ class HandleExtractor{
         void init_element(int index, std::map<int,T_extractor*>& map);
 
     public: 
-        HandleExtractor();
+        HandleExtractors();
 
         // getters for each field extractors
         ExtractorButton* get_button(int index);
@@ -199,7 +198,7 @@ class HandleExtractor{
 };
 
 template<typename T_extractor>
-void HandleExtractor::init_element(int index, std::map<int,T_extractor*>& map){
+void HandleExtractors::init_element(int index, std::map<int,T_extractor*>& map){
     if(map.find(index) == map.end()){
         std::pair<int,T_extractor*> new_element = std::make_pair(index,new T_extractor(index));
         map.insert(new_element);

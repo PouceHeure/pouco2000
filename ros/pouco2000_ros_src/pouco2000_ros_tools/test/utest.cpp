@@ -103,18 +103,20 @@ TEST(TestPouco2000ExtractorLib, test_potentiometer)
 }
 
 /**
- * @brief Test HandleExtractor 
+ * @brief Test HandleExtractors
  */
 TEST(TestPouco2000ExtractorLib, test_handle_extractor)
-{
+{   
+    // init content 
     pouco2000_ros_msgs::Controller msg_content;
-    HandleExtractor he;
+    HandleExtractors he;
     msg_content.buttons.data.push_back(true);
     msg_content.buttons.data.push_back(false);
     msg_content.switchs_on_off.data.push_back(true);
     msg_content.switchs_on_off.data.push_back(false);
     msg_content.switchs_mode.data.push_back(1);
     msg_content.switchs_mode.data.push_back(2);
+    msg_content.switchs_mode.data.push_back(0);
     msg_content.potentiometers_circle.data.push_back(15);
     msg_content.potentiometers_circle.data.push_back(0);
     msg_content.potentiometers_slider.data.push_back(15);
@@ -130,6 +132,7 @@ TEST(TestPouco2000ExtractorLib, test_handle_extractor)
     // switchs_mode
     EXPECT_TRUE(he.get_switchs_modes(0)->is_mode(msg,1));
     EXPECT_TRUE(he.get_switchs_modes(1)->is_mode(msg,2));
+    EXPECT_TRUE(he.get_switchs_modes(2)->is_mode(msg,0));
     // potentiometers_circle
     float value_circle;
     EXPECT_TRUE(he.get_potentiometers_circle(0)->extract(msg,value_circle));
