@@ -1,8 +1,8 @@
 # Pouco2000  <!-- omit in toc --> 
 
-:warning: in development
+status: :warning: in development
 
-related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0e16d941215a3b3b50db7ed5f9754e0e)
+related commit: [a629a58](https://github.com/PoussPouss/pouco2000/tree/a629a58efcaad050d08931cb85c2f576b2f0dd6b)
 
 ## Table Of Contents  <!-- omit in toc --> 
 
@@ -16,7 +16,7 @@ related commit: [2a0978f](https://github.com/PoussPouss/pouco2000/tree/2a0978fc0
     - [Compile its](#compile-its)
   - [Use packages](#use-packages)
     - [Start the controller](#start-the-controller)
-    - [Start the monitor (Opt)](#start-the-monitor-opt)
+    - [Start the monitor (opt.)](#start-the-monitor-opt)
     - [msg:Controller](#msgcontroller)
     - [lib: pouco2000_extractor](#lib-pouco2000extractor)
   - [Documention](#documention)
@@ -115,7 +115,7 @@ Please update the launch *release* inside pouco2000_ros package (verify serial p
 USER$ roslaunch pouco2000_ros release.launch
 ```
 
-#### Start the monitor (Opt)  
+#### Start the monitor (opt.)  
 
 The monitor displays (in the current shell) the current state of the board seen from ROS.  
 
@@ -206,7 +206,9 @@ bool extract(const pouco2000_ros_msgs::Controller::ConstPtr& msg, T_data& result
 
 
 :exclamation: If you want to use this library inside your package, your package need to depend on:
-*pouco2000_ros_tools* (CMakeLists and package.xml)
+[*pouco2000_ros_tools*](/ros/pouco2000_ros_src/pouco2000_ros_tools) (CMakeLists and package.xml)
+
+Each extractor can be instanciated mannuelly or you can instanciate a HandleExtractors (please refer to the example: [*demo_03_handle_extractors*](./ros/pouco2000_ros_examples/pouco2000_ros_demo/node/demo_03_handle_extractors.cpp))
 
 ### Documention 
 
@@ -312,7 +314,7 @@ It's possible to use several microcontrollers, but all elements of a field neet 
 ## Configurations 
 
 Several configurations are possible with Pouco2000: 
-
+ 
 ### Remote
 
 You can plug all microcontrollers to a raspberry or a computer (ROS SLAVE) and connect this computer to your ROS MASTER. By this way it's possible to communicate with your robot via ethernet (or wifi).
