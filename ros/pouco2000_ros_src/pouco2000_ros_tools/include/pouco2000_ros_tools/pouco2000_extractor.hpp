@@ -168,3 +168,42 @@ class ExtractorPotentiometerSlider: public Extractor<float,pouco2000_ros_msgs::P
     public:
         ExtractorPotentiometerSlider(int index);
 };
+
+
+/**
+ * @brief Handle all extractors on a same objects 
+ * The allocations of each extractor depend if the extractor need to be called avoiding large useless allocation
+ * 
+ */
+class HandleExtractor{
+    private: 
+        // extractors map variables 
+        std::map<int,ExtractorButton*> map_extractors_button;
+        std::map<int,ExtractorSwitchOnOff*> map_extractors_switchs_onoff;
+        std::map<int,ExtractorSwitchMode*> map_extractors_switchs_modes;
+        std::map<int,ExtractorPotentiometerCircle*> map_extractors_potentiometers_circle;
+        std::map<int,ExtractorPotentiometerSlider*> map_extractors_potentiometers_slider;
+
+        template<typename T_extractor>
+        void init_element(int index, std::map<int,T_extractor*>& map);
+
+    public: 
+        HandleExtractor();
+
+        // getters for each field extractors
+        ExtractorButton* get_button(int index);
+        ExtractorSwitchOnOff* get_switchs_onoff(int index);
+        ExtractorSwitchMode* get_switchs_modes(int index);
+        ExtractorPotentiometerCircle* get_potentiometers_circle(int index);
+        ExtractorPotentiometerSlider* get_potentiometers_slider(int index);
+};
+
+template<typename T_extractor>
+void HandleExtractor::init_element(int index, std::map<int,T_extractor*>& map){
+    if(map.find(index) == map.end()){
+        std::pair<int,T_extractor*> new_element = std::make_pair(index,new T_extractor(index));
+        map.insert(new_element);
+    }
+}
+
+

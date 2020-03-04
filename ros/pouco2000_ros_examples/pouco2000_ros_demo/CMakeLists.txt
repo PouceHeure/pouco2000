@@ -45,6 +45,10 @@ add_executable(demo_02_extractor_node node/demo_02_extractor.cpp)
 add_dependencies(demo_02_extractor_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
 target_link_libraries(demo_02_extractor_node ${catkin_LIBRARIES})
 
+add_executable(demo_03_handle_extractor_node node/demo_03_handle_extractor.cpp)
+add_dependencies(demo_03_handle_extractor_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
+target_link_libraries(demo_03_handle_extractor_node ${catkin_LIBRARIES})
+
 
 
 

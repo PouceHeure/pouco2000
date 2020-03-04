@@ -65,3 +65,34 @@ ExtractorPotentiometerSlider::ExtractorPotentiometerSlider(int index):Extractor<
 pouco2000_ros_msgs::Potentiometers ExtractorPotentiometerSlider::extract_field(const pouco2000_ros_msgs::Controller::ConstPtr& msg){
     return msg->potentiometers_slider;
 }
+
+
+
+HandleExtractor::HandleExtractor(){
+
+}
+
+ExtractorButton* HandleExtractor::get_button(int index){
+    init_element<ExtractorButton>(index,map_extractors_button);
+    return map_extractors_button[index];
+}
+
+ExtractorSwitchOnOff* HandleExtractor::get_switchs_onoff(int index){
+    init_element<ExtractorSwitchOnOff>(index,map_extractors_switchs_onoff);
+    return map_extractors_switchs_onoff[index];
+}
+
+ExtractorSwitchMode* HandleExtractor::get_switchs_modes(int index){
+    init_element<ExtractorSwitchMode>(index,map_extractors_switchs_modes);
+    return map_extractors_switchs_modes[index];
+}
+
+ExtractorPotentiometerCircle* HandleExtractor::get_potentiometers_circle(int index){
+    init_element<ExtractorPotentiometerCircle>(index,map_extractors_potentiometers_circle);
+    return map_extractors_potentiometers_circle[index];
+}
+
+ExtractorPotentiometerSlider* HandleExtractor::get_potentiometers_slider(int index){
+    init_element<ExtractorPotentiometerSlider>(index,map_extractors_potentiometers_slider);
+    return map_extractors_potentiometers_slider[index];
+}

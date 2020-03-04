@@ -102,6 +102,49 @@ TEST(TestPouco2000ExtractorLib, test_potentiometer)
     EXPECT_TRUE(extractor_pos.extract(msg_fill_15,value_pos));
 }
 
+/**
+ * @brief Test HandleExtractor 
+ */
+TEST(TestPouco2000ExtractorLib, test_handle_extractor)
+{
+    pouco2000_ros_msgs::Controller msg_content;
+    HandleExtractor he;
+    msg_content.buttons.data.push_back(true);
+    msg_content.buttons.data.push_back(false);
+    msg_content.switchs_on_off.data.push_back(true);
+    msg_content.switchs_on_off.data.push_back(false);
+    msg_content.switchs_mode.data.push_back(1);
+    msg_content.switchs_mode.data.push_back(2);
+    msg_content.potentiometers_circle.data.push_back(15);
+    msg_content.potentiometers_circle.data.push_back(0);
+    msg_content.potentiometers_slider.data.push_back(15);
+    msg_content.potentiometers_slider.data.push_back(0);
+    pouco2000_ros_msgs::Controller::ConstPtr msg(new pouco2000_ros_msgs::Controller(msg_content));
+    
+    // buttons 
+    EXPECT_TRUE(he.get_button(0)->is_push(msg));
+    EXPECT_FALSE(he.get_button(1)->is_push(msg));
+    // switchs_on_off
+    EXPECT_TRUE(he.get_switchs_onoff(0)->is_on(msg));
+    EXPECT_FALSE(he.get_switchs_onoff(1)->is_on(msg));
+    // switchs_mode
+    EXPECT_TRUE(he.get_switchs_modes(0)->is_mode(msg,1));
+    EXPECT_TRUE(he.get_switchs_modes(1)->is_mode(msg,2));
+    // potentiometers_circle
+    float value_circle;
+    EXPECT_TRUE(he.get_potentiometers_circle(0)->extract(msg,value_circle));
+    EXPECT_TRUE(value_circle == 15);
+    EXPECT_TRUE(he.get_potentiometers_circle(1)->extract(msg,value_circle));
+    EXPECT_TRUE(value_circle == 0);
+    // potentiometers_slider
+    float value_slider;
+    EXPECT_TRUE(he.get_potentiometers_slider(0)->extract(msg,value_slider));
+    EXPECT_TRUE(value_slider == 15);
+    EXPECT_TRUE(he.get_potentiometers_slider(1)->extract(msg,value_slider));
+    EXPECT_TRUE(value_slider == 0);
+}
+
+
 
 int main(int argc, char **argv){
   testing::InitGoogleTest(&argc, argv);
