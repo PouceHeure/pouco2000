@@ -157,7 +157,7 @@ class ExtractorPotentiometerCircle: public Extractor<float,pouco2000_ros_msgs::P
 
 
 /**
- * @brief Extracor for potentiometers_slider field
+ * @brief Extractor for potentiometers_slider field
  * 
  */
 class ExtractorPotentiometerSlider: public Extractor<float,pouco2000_ros_msgs::Potentiometers>{
@@ -171,6 +171,7 @@ class ExtractorPotentiometerSlider: public Extractor<float,pouco2000_ros_msgs::P
 
 /**
  * @brief Handle all extractors on a same objects 
+ * 
  * The allocations of each extractor depend if the extractor need to be called avoiding large useless allocation
  * 
  */
