@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   pouco2000_ros_msgs # need: pouco2000 msgs 
   pouco2000_ros_tools # need: pouco2000_extractor lib 
   roscpp
+  rospy 
   std_msgs
 )
 

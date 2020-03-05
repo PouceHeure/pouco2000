@@ -60,7 +60,15 @@ install(
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
 
+catkin_python_setup()
+
+catkin_install_python(PROGRAMS module/pouco2000_ros_tools/pouco2000_extractor_py.py
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+
 if(CATKIN_ENABLE_TESTING)
   catkin_add_gtest(utest test/utest.cpp)
   target_link_libraries(utest ${catkin_LIBRARIES} ${PROJECT_NAME}_extractor)
 endif()
+
+

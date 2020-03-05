@@ -19,6 +19,7 @@
   <exec_depend>pouco2000_ros_msgs</exec_depend>
   <exec_depend>pouco2000_ros_tools</exec_depend>
   <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
 
 
