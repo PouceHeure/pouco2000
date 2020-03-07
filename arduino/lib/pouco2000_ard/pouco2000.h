@@ -16,7 +16,7 @@ struct Switch {
 
 struct SwitchMode {
   int pin; 
-  int value = false;
+  int value = 0;
 };
 
 struct Button {
