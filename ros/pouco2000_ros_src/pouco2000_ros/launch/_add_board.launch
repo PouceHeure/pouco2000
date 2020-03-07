@@ -1,0 +1,6 @@
+<launch>
+    <arg name="board_port"/>
+    <node pkg="rosserial_arduino" type="serial_node.py" name="$(anon board_port)">
+        <param name="port" value="$(arg board_port)"/>
+    </node>
+</launch>
