@@ -84,7 +84,8 @@ This package exposes a cpp library, easily the developement of nodes using this 
 ROS packages need to placed inside your ROS workspace. It's possible to place its, by a symbolic link. 
 
 ``` shell
-USER$ ln -s {this/ros/folder/path} {ros_ws/path}
+cd {ros/work/space/src/path/}
+USER$ ln -s {pouco2000/ros/path} pouco2000
 ```
 
 (It's also possible to copy and paste the folder inside your workspace)
@@ -225,7 +226,8 @@ An arduino library has been developed, allowing to create easily a code.
 Like ROS package, the library need to be placed at the good place. It's possible to create a symbolic link.  
 
 ```shell 
-USER$ ln -s {arduino_lib/path} {arduino/path/libraries/}
+cd {Arduino/libraries/path}
+USER$ ln -s {pouco2000/arduino/lib/pouco2000_ard/path} pouco2000_ard 
 ```
 
 #### Place ros_lib
