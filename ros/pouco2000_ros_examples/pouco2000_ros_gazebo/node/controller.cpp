@@ -2,6 +2,7 @@
 #include <ros/ros.h>
 
 // lib msgs 
+#include "std_msgs/UInt8.h"
 #include "std_msgs/Bool.h"
 #include "std_msgs/Float64.h"
 #include "geometry_msgs/Twist.h"
@@ -146,7 +147,7 @@ class ControllerBeacon {
         ros::Subscriber sub;
         
         /**
-         * @brief send a msg to HeadLightFront 
+         * @brief send a msg to Beacon 
          * controller in fact the value of the msg received
          * 
          * @param msg msg received  
@@ -183,32 +184,44 @@ const float ControllerBeacon::TRANS_VALUE_MAX = 10;
 const float ControllerBeacon::ROT_VALUE_MIN = 0;
 const float ControllerBeacon::ROT_VALUE_MAX = 10;
 
-
-
 /* controller On/Off to float  */
 
 class ControllerCmdVel {
     private: 
         // ros variables 
         ros::Publisher pub;
-        ros::Subscriber sub;
+        ros::Subscriber sub_cmd_vel;
+        ros::Subscriber sub_mode;
         
+        int current_mode;
+
         /**
          * @brief send a msg to HeadLightFront 
          * controller in fact the value of the msg received
          * 
          * @param msg msg received  
          */
-        void callback(const geometry_msgs::Twist::ConstPtr& msg){
-            this->pub.publish(msg);
+        void callback_cmd_vel(const geometry_msgs::Twist::ConstPtr& msg){
+            geometry_msgs::Twist msg_cmd_vel;
+            msg_cmd_vel.linear.x = msg->linear.x * (current_mode + 1);
+            msg_cmd_vel.angular.z = msg->angular.z;
+            this->pub.publish(msg_cmd_vel);
+        }
+
+        void callback_mode(const std_msgs::UInt8::ConstPtr& msg){
+            this->current_mode = msg->data;
         }
 
     public:
         ControllerCmdVel(ros::NodeHandle& nh, 
-                                const std::string& sub_topic,
-                                const std::string& pub_topic){
+                                const std::string& sub_topic_cmd,
+                                const std::string& sub_topic_mode,
+                                const std::string& pub_topic):current_mode(0){
             this->pub = nh.advertise<geometry_msgs::Twist>(pub_topic,10);
-            this->sub = nh.subscribe<geometry_msgs::Twist>(sub_topic,1000,&ControllerCmdVel::callback,this);
+            this->sub_cmd_vel = nh.subscribe<geometry_msgs::Twist>(sub_topic_cmd,1000,
+                                                    &ControllerCmdVel::callback_cmd_vel,this);
+            this->sub_mode = nh.subscribe<std_msgs::UInt8>(sub_topic_mode,1000,
+                                                    &ControllerCmdVel::callback_mode,this);
         }
 };
 
@@ -223,7 +236,9 @@ int main(int argc, char **argv){
   ControllerOnOffToFloat controller_fork(nh,"controller/fork","/pouco2000Robot_forks_controller/command");
   ControllerBeacon controller_beacon(nh,"controller/beacon","/pouco2000Robot_beacon_rot_controller/command","/pouco2000Robot_beacon_trans_controller/command");
   ControllerBeacon controller_disc(nh,"controller/disc","/pouco2000Robot_disc_rot_controller/command","/pouco2000Robot_disc_trans_controller/command");
-  ControllerCmdVel controller_cmdvel(nh,"controller/cmdvel","/pouco2000Robot_diff_drive_controller/cmd_vel");
+  ControllerCmdVel controller_cmdvel(nh,"controller/cmdvel/vel",
+                                        "controller/cmdvel/mode",
+                                        "/pouco2000Robot_diff_drive_controller/cmd_vel");
   
   ros::spin();
 

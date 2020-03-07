@@ -4,9 +4,12 @@
         <!-- load parameter from param folder -->
         <rosparam file="$(find pouco2000_ros)/param/default.yaml" />
         
-        <node pkg="rosserial_arduino" type="serial_node.py" name="hardware_switchs">
+        <node pkg="rosserial_arduino" type="serial_node.py" name="hardware_board01">
             <param name="port" value="/dev/ttyUSB0"/>
-            <param name="baud" value="57600"/>
+        </node>
+
+        <node pkg="rosserial_arduino" type="serial_node.py" name="hardware_board02">
+            <param name="port" value="/dev/ttyUSB1"/>
         </node>
 
         <!-- real controller -->
