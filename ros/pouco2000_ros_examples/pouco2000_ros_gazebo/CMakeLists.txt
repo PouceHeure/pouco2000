@@ -41,11 +41,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(interface_node node/interface.cpp)
-add_dependencies(interface_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
-target_link_libraries(interface_node ${catkin_LIBRARIES})
+add_executable(interface_pouco2000_node node/interface_pouco2000.cpp)
+add_dependencies(interface_pouco2000_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
+target_link_libraries(interface_pouco2000_node ${catkin_LIBRARIES})
 
-add_executable(controller_gazebo_node node/controller.cpp)
-add_dependencies(controller_gazebo_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
-target_link_libraries(controller_gazebo_node ${catkin_LIBRARIES})
+add_executable(controller_robot_node node/controller_robot.cpp)
+add_dependencies(controller_robot_node ${catkin_EXPORTED_TARGETS} pouco2000_ros_msgs_generate_messages_cpp)
+target_link_libraries(controller_robot_node ${catkin_LIBRARIES})
 
