@@ -66,9 +66,3 @@ catkin_install_python(PROGRAMS module/pouco2000_ros_tools/pouco2000_extractor_py
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 
-if(CATKIN_ENABLE_TESTING)
-  catkin_add_gtest(utest_pouco2000_ros_tools test/utest.cpp)
-  target_link_libraries(utest_pouco2000_ros_tools ${catkin_LIBRARIES} ${PROJECT_NAME}_extractor)
-endif()
-
-

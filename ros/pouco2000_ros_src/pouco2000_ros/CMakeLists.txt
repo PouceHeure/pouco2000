@@ -103,8 +103,3 @@ execute_process(COMMAND rospack find ${PROJECT_NAME}
                 OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND rosdoc_lite -o ${PROJECT_DIR}/doc/ ${PROJECT_DIR})
 
-if(CATKIN_ENABLE_TESTING)
-  catkin_add_gtest(utest_pouco2000_ros test/utest.cpp)
-  target_link_libraries(utest_pouco2000_ros ${catkin_LIBRARIES} ${PROJECT_NAME} ${PROJECT_NAME}_debug)
-endif()
-
