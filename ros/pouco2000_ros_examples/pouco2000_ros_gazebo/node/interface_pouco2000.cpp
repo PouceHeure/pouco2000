@@ -12,6 +12,7 @@
 #include <pouco2000_ros_tools/pouco2000_extractor.hpp>
 
 #define ESPILONE 1
+#define MID_VALUE 82
 
 class HardwareToController{
     
@@ -76,7 +77,7 @@ class HardwareToController{
         bool linear_ok = he->get_potentiometers_slider(0)->extract(msg,linear_value);
         
         float rot_value;
-        bool rot_ok = he->get_potentiometers_circle(1)->extract(msg,rot_value);
+        bool rot_ok = he->get_potentiometers_circle(0)->extract(msg,rot_value);
 
         int sign_direction = 1;
         bool bool_direction;
@@ -90,9 +91,9 @@ class HardwareToController{
         if(linear_ok && rot_ok){
             geometry_msgs::Twist twist_msg;
             twist_msg.linear.x = sign_direction * linear_value/20;
-            float dist_0 = abs(rot_value - 50);
+            float dist_0 = abs(rot_value - MID_VALUE);
             if(dist_0 > ESPILONE){
-                twist_msg.angular.z = abs(rot_value - 50)/20 * (rot_value >= 50 ? -1 : 1);
+                twist_msg.angular.z = abs(rot_value - MID_VALUE)/20 * (rot_value >= MID_VALUE ? -1 : 1);
             }
             pub_cmd_vel.publish(twist_msg);
         }

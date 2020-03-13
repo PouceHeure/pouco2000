@@ -112,7 +112,7 @@ template<typename T_field, typename T_data, typename T_msg>
 void Handle<T_field,T_data,T_msg>::setup(ros::NodeHandle& nh){
   nh.advertise(*(this->pub));
   for(int i=0;i<this->n_connections;i++){
-    pinMode(elements[i].pin,INPUT);
+    pinMode(elements[i].pin,INPUT_PULLUP); //INPUT
   }
   msg.data_length = this->n_connections;
 }
@@ -122,7 +122,7 @@ void Handle<T_field,T_data,T_msg>::update(){
   // read current state of each pin 
   for(int i=0;i<this->n_connections;i++){
     if(is_digital){
-      this->data[i] = digitalRead(elements[i].pin);
+      this->data[i] = HIGH - digitalRead(elements[i].pin);
     }else{
       this->data[i] = analogRead(elements[i].pin);
     }

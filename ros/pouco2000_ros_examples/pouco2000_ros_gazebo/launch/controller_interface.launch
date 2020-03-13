@@ -1,4 +1,4 @@
 <launch>
-    <node name="interface_node" pkg="pouco2000_ros_gazebo" type="interface_node" />
-    <node name="controller_node" pkg="pouco2000_ros_gazebo" type="controller_gazebo_node" />
+    <node name="interface_pouco2000_node" pkg="pouco2000_ros_gazebo" type="interface_pouco2000_node" />
+    <node name="controller_robot_node" pkg="pouco2000_ros_gazebo" type="controller_robot_node" />
 </launch>
