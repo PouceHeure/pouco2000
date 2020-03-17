@@ -4,3 +4,6 @@
 doc/
 # catkin_tools
 .catkin_tools/
+# python 
+__pychach__/
+*.pyc
