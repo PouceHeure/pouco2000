@@ -146,12 +146,13 @@ color::FG ProgressBarView::compute_color(float percent_value){
 
 ColorString ProgressBarView::draw(){
     float percent = (this->value-min)/(max-min) * 100;
+    float v_percent = percent; // value to show 
     // restrict value between 0 and 100 avoidind conflit during the drawing 
     if(percent < 0){
-        percent = 0;
+        v_percent = 0;
     }
     else if(percent > 100){
-        percent = 100;
+        v_percent = 100;
     }
     int high_sticks = percent * ProgressBarView::SCALE;
     int low_sticks = (100 - percent) * ProgressBarView::SCALE;
@@ -159,7 +160,7 @@ ColorString ProgressBarView::draw(){
     ColorString result("[");
     std::string high_sticks_str = std::string(high_sticks,ProgressBarView::CHAR_HIGH_STICK);
     std::string low_sticks_str = std::string(low_sticks,ProgressBarView::CHAR_LOW_STICK);
-    std::string value_str = math::round_digits(percent,2); 
+    std::string value_str = math::round_digits(v_percent,2); 
     result.add(high_sticks_str + low_sticks_str + value_str,color);
     result.add("]");
     return result;
