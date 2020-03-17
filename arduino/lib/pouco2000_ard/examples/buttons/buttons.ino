@@ -7,9 +7,9 @@ int buttons_pin_connections[] = {2,5,6};
 // nodehandle  
 ros::NodeHandle nh;
 
-HandleButtons handle_buttons("buttons",
-                                  buttons_pin_connections,
-                                  sizeof(buttons_pin_connections)/sizeof(int));
+HandleButtons handle_buttons(TOPIC_BUTTONS,
+                      buttons_pin_connections,
+                      sizeof(buttons_pin_connections)/sizeof(int));
 
 void setup() {
   // setup ros 

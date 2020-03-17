@@ -2,36 +2,38 @@
 
 #define DELAY 50
 
-int switchs_onoff_pin_connections[] = {12,10,8,6,4};
-int switchs_mode_pin_connections[] = {11,9,7,5,3};
-int potentiometer_circle_pin_connections[] = {A1};
+int switchs_onoff_pins[] = {2,3,4,5,6};
+int switchs_mode_pins[] = {7,8,9,10,11};
+int potentiometer_circle_pins[] = {A7,A6,A5,A4,A3};
 
 //ros variables  
 ros::NodeHandle nh;
 
-HandleSwitchsOnOff handle_switchs_onoff("switchs_onoff",
-                                  switchs_onoff_pin_connections,
-                                  sizeof(switchs_onoff_pin_connections)/sizeof(int));
+HandleSwitchsOnOff handle_switchs_onoff(TOPIC_SWITCHS_ONOFF,
+                          switchs_onoff_pins,
+                          sizeof(switchs_onoff_pins)/sizeof(int),
+                          INPUT);
 
-HandleSwitchsMode handle_switchs_mode("switchs_modes",
-                                  switchs_mode_pin_connections,
-                                  sizeof(switchs_mode_pin_connections)/sizeof(int));
+HandleSwitchsMode handle_switchs_mode(TOPIC_SWITCHS_MODES,
+                          switchs_mode_pins,
+                          sizeof(switchs_mode_pins)/sizeof(int));
 
-HandlePotentiometers handle_potentiometers_circle("potentiometers_circle",
-                                                  potentiometer_circle_pin_connections,
-                                                  sizeof(potentiometer_circle_pin_connections)/sizeof(int),
-                                                  false);
+HandlePotentiometers handle_potentiometers_circle(TOPIC_POTENTIOMETERS_CIRCLE,
+                          potentiometer_circle_pins,
+                          sizeof(potentiometer_circle_pins)/sizeof(int),
+                          INPUT);
 
-void setup() {
+void setup(){
   // setup ros 
   nh.initNode();
-
+  // setup handle
   handle_switchs_onoff.setup(nh);
   handle_switchs_mode.setup(nh);
   handle_potentiometers_circle.setup(nh);
 }
 
-void loop() {
+void loop(){
+  // update handles
   handle_switchs_onoff.update();
   handle_switchs_mode.update();
   handle_potentiometers_circle.update();

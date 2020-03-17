@@ -26,13 +26,14 @@ HandlePotentiometers handle_potentiometers("potentiometers_circle",
 void setup() {
   // setup ros 
   nh.initNode();
-
+  // setup handles 
   handle_switchs.setup(nh);
   handle_buttons.setup(nh);
   handle_potentiometers.setup(nh);
 }
 
 void loop() {
+  // update handles 
   handle_switchs.update();
   handle_buttons.update();
   handle_potentiometers.update();

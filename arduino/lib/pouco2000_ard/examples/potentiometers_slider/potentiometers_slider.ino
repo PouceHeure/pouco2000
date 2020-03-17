@@ -7,10 +7,10 @@ int potentiometers_pin_connections[] = {A3,A5};
 // nodehandle  
 ros::NodeHandle nh;
 
-HandlePotentiometers handle_potentiometers("potentiometers_slider",
+HandlePotentiometers handle_potentiometers(TOPIC_POTENTIOMETERS_SLIDER,
                                   potentiometers_pin_connections,
                                   sizeof(potentiometers_pin_connections)/sizeof(int),
-                                  false); // isn't a digital pin 
+                                  INPUT); 
 
 void setup() {
   // setup ros 

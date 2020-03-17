@@ -7,7 +7,7 @@ int switchs_pin_connections[] = {3,1,5,6};
 // nodehandle  
 ros::NodeHandle nh;
 
-HandleSwitchsOnOff handle_switchs("switchs_onoff",
+HandleSwitchsOnOff handle_switchs(TOPIC_SWITCHS_ONOFF,
                                   switchs_pin_connections,
                                   sizeof(switchs_pin_connections)/sizeof(int));
 
