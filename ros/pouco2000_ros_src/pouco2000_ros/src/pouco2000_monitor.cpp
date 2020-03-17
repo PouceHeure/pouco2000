@@ -146,6 +146,13 @@ color::FG ProgressBarView::compute_color(float percent_value){
 
 ColorString ProgressBarView::draw(){
     float percent = (this->value-min)/(max-min) * 100;
+    // restrict value between 0 and 100 avoidind conflit during the drawing 
+    if(percent < 0){
+        percent = 0;
+    }
+    else if(percent > 100){
+        percent = 100;
+    }
     int high_sticks = percent * ProgressBarView::SCALE;
     int low_sticks = (100 - percent) * ProgressBarView::SCALE;
     color::FG color = compute_color(percent);
