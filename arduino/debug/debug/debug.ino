@@ -2,26 +2,26 @@
 
 #define DELAY 50
 
-int switchs_pin_connections[] = {3,1,5,6};
-int buttons_pin_connections[] = {2,7,8};
-int potentiometer_circle_pin_connections[] = {A3,A5};
+int switchs_pins[] = {3,1,5,6};
+int buttons_pins[] = {2,7,8};
+int potentiometer_circle_pins[] = {A3,A5};
 
 //ros variables  
 ros::NodeHandle nh;
 
-HandleSwitchsOnOff handle_switchs("switchs_onoff",
-                                  switchs_pin_connections,
-                                  sizeof(switchs_pin_connections)/sizeof(int));
+HandleSwitchsOnOff handle_switchs(TOPIC_SWITCHS_ONOFF,
+                          switchs_pins,
+                          sizeof(switchs_pins)/sizeof(int));
 
-HandleButtons handle_buttons("buttons",
-                              buttons_pin_connections,
-                              sizeof(buttons_pin_connections)/sizeof(int),
-                              true);
+HandleButtons handle_buttons(TOPIC_BUTTON,
+                     buttons_pins,
+                     sizeof(buttons_pins)/sizeof(int),
+                     true);
 
-HandlePotentiometers handle_potentiometers("potentiometers_circle",
-                                            potentiometer_circle_pin_connections,
-                                            sizeof(potentiometer_circle_pin_connections)/sizeof(int),
-                                            false);
+HandlePotentiometers handle_potentiometers(TOPIC_POTENTIOMETERS_CIRCLE,
+                            potentiometer_circle_pins,
+                            sizeof(potentiometer_circle_pins)/sizeof(int),
+                            false);
 
 void setup() {
   // setup ros 

@@ -255,9 +255,9 @@ For each field (buttons, switchs on off...), a handle object need to be created.
  * @param topic topic where the message will be published
  * @param connections array of connections
  * @param n_connections number of connections 
- * @param is_digital if the field use digital or analog port 
+ * @param input_type input mode chosen (INPUT or INPUT_PULLUP) 
  */
-Handle<T_field,T_data,T_msg>::Handle(const char* topic,int* connections,int n_connections,bool is_digital)
+Handle<T_field,T_data,T_msg>::Handle(const char* topic,int* connections,int n_connections,int input_type)
 ```
 In the setup method, the handle need to call a setup method. 
 

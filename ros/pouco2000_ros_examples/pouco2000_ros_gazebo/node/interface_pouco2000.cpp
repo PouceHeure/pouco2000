@@ -12,7 +12,8 @@
 #include <pouco2000_ros_tools/pouco2000_extractor.hpp>
 
 #define ESPILONE 1
-#define MID_VALUE 82
+#define MIN_VALUE 5
+#define MID_VALUE 50
 
 class HardwareToController{
     
@@ -74,7 +75,7 @@ class HardwareToController{
 
         // get value for vel of cmd_vel 
         float linear_value;
-        bool linear_ok = he->get_potentiometers_slider(0)->extract(msg,linear_value);
+        bool linear_ok = he->get_potentiometers_slider(1)->extract(msg,linear_value);
         
         float rot_value;
         bool rot_ok = he->get_potentiometers_circle(0)->extract(msg,rot_value);

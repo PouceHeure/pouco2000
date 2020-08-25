@@ -6,8 +6,7 @@
 //lib ros 
 #include <ros/ros.h>
 
-
-// information allowing to load param about rate sleep 
+// rate sleep variable 
 #define DEFAULT_RATE 10
 #define KEY_PARAM_RATE "~rate"
 
